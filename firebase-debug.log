@@ -1,0 +1,461 @@
+[debug] [2026-01-07T22:27:19.156Z] ----------------------------------------------------------------------
+[debug] [2026-01-07T22:27:19.162Z] Command:       D:\Program Files\nodejs\node.exe C:\Users\zairt.XEON_H97_M2V\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2026-01-07T22:27:19.163Z] CLI Version:   15.1.0
+[debug] [2026-01-07T22:27:19.163Z] Platform:      win32
+[debug] [2026-01-07T22:27:19.163Z] Node Version:  v24.12.0
+[debug] [2026-01-07T22:27:19.163Z] Time:          Wed Jan 07 2026 17:27:19 GMT-0500 (hora estándar de Colombia)
+[debug] [2026-01-07T22:27:19.164Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-01-07T22:27:25.220Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-01-07T22:27:25.221Z] > authorizing via signed-in user (luisenguerrero.cm@gmail.com)
+[debug] [2026-01-07T22:27:25.414Z] java version "25" 2025-09-16 LTS
+Java(TM) SE Runtime Environment (build 25+37-LTS-3491)
+
+[debug] [2026-01-07T22:27:25.415Z] Java HotSpot(TM) 64-Bit Server VM (build 25+37-LTS-3491, mixed mode, sharing)
+
+[debug] [2026-01-07T22:27:25.448Z] Parsed Java major version: 25
+[info] i  emulators: Starting emulators: auth, functions, firestore, hosting, extensions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, hosting, extensions"}}
+[debug] [2026-01-07T22:27:25.451Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:25.451Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:25.453Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/mini-bot-7a21d [none]
+[debug] [2026-01-07T22:27:25.946Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/mini-bot-7a21d 200
+[debug] [2026-01-07T22:27:25.946Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/mini-bot-7a21d {"projectNumber":"778742793982","projectId":"mini-bot-7a21d","lifecycleState":"ACTIVE","name":"Mini-bot","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-01-07T15:41:12.656450Z"}
+[warn] !  hosting: Port 5000 is available on 127.0.0.1 but not ::1. This may cause issues with some clients. {"metadata":{"emulator":{"name":"hosting"},"message":"Port 5000 is available on 127.0.0.1 but not ::1. This may cause issues with some clients."}}
+[warn] !  hosting: If you encounter connectivity issues, consider switching to a different port or explicitly specifying "host": "<ip address>" instead of hostname in firebase.json {"metadata":{"emulator":{"name":"hosting"},"message":"If you encounter connectivity issues, consider switching to a different port or explicitly specifying \u001b[33m\"host\": \"<ip address>\"\u001b[39m instead of hostname in firebase.json"}}
+[debug] [2026-01-07T22:27:25.970Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-01-07T22:27:25.970Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-01-07T22:27:25.971Z] [firestore] Firestore Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-01-07T22:27:25.971Z] [firestore.websocket] websocket server for firestore only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-01-07T22:27:25.971Z] assigned listening specs for emulators {"user":{"hosting":[{"address":"127.0.0.1","family":"IPv4","port":5000}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2026-01-07T22:27:25.978Z] Emulator locator file path: C:\Users\ZAIRT~1.XEO\AppData\Local\Temp\hub-mini-bot-7a21d.json
+[debug] [2026-01-07T22:27:25.978Z] [hub] writing locator at C:\Users\ZAIRT~1.XEO\AppData\Local\Temp\hub-mini-bot-7a21d.json
+[debug] [2026-01-07T22:27:25.987Z] [Extensions] Started Extensions emulator, this is a noop.
+[debug] [2026-01-07T22:27:25.995Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-01-07T22:27:25.996Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-01-07T22:27:25.996Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-01-07T22:27:25.996Z] late-assigned ports for functions and eventarc emulators {"user":{"hosting":[{"address":"127.0.0.1","family":"IPv4","port":5000}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, database, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, database, pubsub, storage, dataconnect\u001b[22m"}}
+[warn] !  functions: Application Default Credentials detected. Non-emulated services will access production using these credentials. Be careful! {"metadata":{"emulator":{"name":"functions"},"message":"Application Default Credentials detected. Non-emulated services will access production using these credentials. Be careful!"}}
+[debug] [2026-01-07T22:27:32.555Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:32.555Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:32.556Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/mini-bot-7a21d/adminSdkConfig [none]
+[debug] [2026-01-07T22:27:32.848Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/mini-bot-7a21d/adminSdkConfig 200
+[debug] [2026-01-07T22:27:32.848Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/mini-bot-7a21d/adminSdkConfig {"projectId":"mini-bot-7a21d","storageBucket":"mini-bot-7a21d.firebasestorage.app"}
+[warn] !  firestore: Cloud Firestore Emulator does not support multiple databases yet. {"metadata":{"emulator":{"name":"firestore"},"message":"Cloud Firestore Emulator does not support multiple databases yet."}}
+[warn] !  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file. {"metadata":{"emulator":{"name":"firestore"},"message":"Did not find a Cloud Firestore rules file specified in a firebase.json config file."}}
+[warn] !  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration. {"metadata":{"emulator":{"name":"firestore"},"message":"The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration."}}
+[debug] [2026-01-07T22:27:32.875Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2026-01-07T22:27:32.875Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2026-01-07T22:27:32.875Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\zairt.XEON_H97_M2V\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.20.2.jar","--host","127.0.0.1","--port",8080,"--websocket_port",9150,"--project_id","mini-bot-7a21d","--single_project_mode",true,"--functions_emulator","127.0.0.1:5001"],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false,"port":8080} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\zairt.XEON_H97_M2V\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.20.2.jar\",\"--host\",\"127.0.0.1\",\"--port\",8080,\"--websocket_port\",9150,\"--project_id\",\"mini-bot-7a21d\",\"--single_project_mode\",true,\"--functions_emulator\",\"127.0.0.1:5001\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false,\"port\":8080}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[info] +  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
+[debug] [2026-01-07T22:27:43.370Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:43.370Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:43.371Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/mini-bot-7a21d/sites 
+[debug] [2026-01-07T22:27:44.117Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/mini-bot-7a21d/sites 200
+[debug] [2026-01-07T22:27:44.117Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/mini-bot-7a21d/sites {"sites":[{"name":"projects/mini-bot-7a21d/sites/mini-bot-7a21d","defaultUrl":"https://mini-bot-7a21d.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2026-01-07T22:27:44.118Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:44.118Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:44.118Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/mini-bot-7a21d/webApps/-/config [none]
+[debug] [2026-01-07T22:27:44.653Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/mini-bot-7a21d/webApps/-/config 200
+[debug] [2026-01-07T22:27:44.654Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/mini-bot-7a21d/webApps/-/config {"projectId":"mini-bot-7a21d","appId":"1:778742793982:web:963ef67ef6bffb408bc7af","storageBucket":"mini-bot-7a21d.firebasestorage.app","apiKey":"AIzaSyDdKfi2ocCxFYHUPEWdmj62FTUXV3UxNIM","authDomain":"mini-bot-7a21d.firebaseapp.com","messagingSenderId":"778742793982","projectNumber":"778742793982","version":"2"}
+[debug] [2026-01-07T22:27:44.664Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:44.664Z] Checked if tokens are valid: true, expires at: 1767826293842
+[debug] [2026-01-07T22:27:44.665Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/mini-bot-7a21d [none]
+[debug] [2026-01-07T22:27:44.950Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/mini-bot-7a21d 200
+[debug] [2026-01-07T22:27:44.950Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/mini-bot-7a21d {"projectId":"mini-bot-7a21d","projectNumber":"778742793982","displayName":"Mini-bot","name":"projects/mini-bot-7a21d","resources":{"hostingSite":"mini-bot-7a21d"},"state":"ACTIVE","etag":"1_3e459e25-23f6-444a-87ee-618bd88442ee"}
+[debug] [2026-01-07T22:27:44.951Z] Specified "public" directory "build" does not exist; Deploy to Hosting site "mini-bot-7a21d" may fail or be empty.
+[info] i  hosting[mini-bot-7a21d]: Serving hosting files from: build {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mbuild\u001b[22m"}}
+[info] +  hosting[mini-bot-7a21d]: Local server: http://127.0.0.1:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://127.0.0.1:5000\u001b[22m\u001b[24m"}}
+[debug] [2026-01-07T22:27:44.993Z] [Extensions] Connecting Extensions emulator, this is a noop.
+[info] i  functions: Watching "K:\Desarrollo\XUMTECH\Sam_MiniBot\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\" for Cloud Functions..."}}
+[debug] [2026-01-07T22:27:45.000Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-01-07T22:27:47.849Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.10.1",
+    "firebase-functions": "^4.6.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "^18.19.0",
+    "typescript": "^5.3.3",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2026-01-07T22:27:47.850Z] Building nodejs source
+[debug] [2026-01-07T22:27:47.850Z] Failed to find version of module node: reached end of search path K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules
+[warn] !  functions: Your requested "node" version "18" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env.local. 
+[info] i  functions: You are using a version of firebase-functions SDK (4.9.0) that does not have support for the newest Firebase Extensions features. Please update firebase-functions SDK to >=5.1.0 to use them correctly 
+[debug] [2026-01-07T22:27:47.855Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-01-07T22:27:47.877Z] Found firebase-functions binary at 'K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8406
+
+[debug] [2026-01-07T22:27:48.938Z] Got response from /__/functions.yaml {"endpoints":{"chatbot":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"chatbot"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: chatbot. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: chatbot."}}
+[info] +  functions[us-central1-chatbot]: http function initialized (http://127.0.0.1:5001/mini-bot-7a21d/us-central1/chatbot). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/mini-bot-7a21d/us-central1/chatbot)."}}
+[debug] [2026-01-07T22:27:52.999Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬──────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI              │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Authentication │ 127.0.0.1:9099 │ http://127.0.0.1:4000/auth       │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Functions      │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions  │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Firestore      │ 127.0.0.1:8080 │ http://127.0.0.1:4000/firestore  │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Hosting        │ 127.0.0.1:5000 │ n/a                              │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Extensions     │ 127.0.0.1:5001 │ http://127.0.0.1:4000/extensions │
+└────────────────┴────────────────┴──────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500, 9150
+┌─────────────────────────┬───────────────┬─────────────────────┐
+│ Extension Instance Name │ Extension Ref │ View in Emulator UI │
+└─────────────────────────┴───────────────┴─────────────────────┘
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2026-01-07T22:32:10.200Z] [work-queue] {"queuedWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T22:32:10.200Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T22:32:10.200Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T22:32:10.200Z"],"workRunningCount":1}
+[debug] [2026-01-07T22:32:10.201Z] Accepted request POST /mini-bot-7a21d/us-central1/chatbot --> us-central1-chatbot
+[debug] [2026-01-07T22:32:10.204Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2026-01-07T22:32:10.204Z] [functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/"}}
+[info] i  functions: Loaded environment variables from .env.local. 
+[debug] [2026-01-07T22:32:10.222Z] [worker-pool] addWorker(us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-chatbot)"}}
+[debug] [2026-01-07T22:32:10.223Z] [worker-pool] Adding worker with key us-central1-chatbot, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-chatbot, total=1"}}
+[debug] [2026-01-07T22:32:15.054Z] [runtime-status] [46248] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2026-01-07T22:32:15.058Z] [runtime-status] [46248] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.9.0","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.9.0\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2026-01-07T22:32:15.058Z] [runtime-status] [46248] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2026-01-07T22:32:15.061Z] [runtime-status] [46248] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.9.0","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.9.0\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2026-01-07T22:32:15.421Z] [runtime-status] [46248] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2026-01-07T22:32:15.426Z] [runtime-status] [46248] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.9.0","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.9.0\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2026-01-07T22:32:15.573Z] [runtime-status] [46248] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.11.1","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2026-01-07T22:32:15.579Z] [runtime-status] [46248] initializeApp(DEFAULT) {"storageBucket":"mini-bot-7a21d.firebasestorage.app","projectId":"mini-bot-7a21d"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] initializeApp(DEFAULT) {\"storageBucket\":\"mini-bot-7a21d.firebasestorage.app\",\"projectId\":\"mini-bot-7a21d\"}"}}
+[debug] [2026-01-07T22:32:15.591Z] [runtime-status] [46248] Functions runtime initialized. {"cwd":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions","node_version":"24.12.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] Functions runtime initialized. {\"cwd\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\",\"node_version\":\"24.12.0\"}"}}
+[debug] [2026-01-07T22:32:15.592Z] [runtime-status] [46248] Listening to port: \\?\pipe\fire_emu_94c50a59237719ec {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [46248] Listening to port: \\\\?\\pipe\\fire_emu_94c50a59237719ec"}}
+[debug] [2026-01-07T22:32:15.670Z] [worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: IDLE"}}
+[debug] [2026-01-07T22:32:15.671Z] [worker-pool] submitRequest(triggerId=us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-chatbot)"}}
+[info] i  functions: Beginning execution of "us-central1-chatbot" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Beginning execution of \"us-central1-chatbot\""}}
+[debug] [2026-01-07T22:32:15.672Z] [worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: BUSY"}}
+[info] >  Error en el chatbot: TypeError: Cannot read properties of undefined (reading 'serverTimestamp') {"user":"Error en el chatbot: TypeError: Cannot read properties of undefined (reading 'serverTimestamp')","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"\u001b[90m> \u001b[39m Error en el chatbot: TypeError: Cannot read properties of undefined (reading 'serverTimestamp')"}}
+[info] >      at chatbotHandler (K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\chatbot.js:131:51) {"user":"    at chatbotHandler (K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\chatbot.js:131:51)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"\u001b[90m> \u001b[39m     at chatbotHandler (K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\chatbot.js:131:51)"}}
+[info] >      at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {"user":"    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"\u001b[90m> \u001b[39m     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"}}
+[debug] [2026-01-07T22:32:16.343Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-chatbot" in 672.2233ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finished \"us-central1-chatbot\" in 672.2233ms"}}
+[debug] [2026-01-07T22:32:16.344Z] [worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: IDLE"}}
+[debug] [2026-01-07T22:32:16.345Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2026-01-07T22:32:16.345Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2026-01-07T22:32:16.345Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T22:45:45.581Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\src\chatbot.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\src\\chatbot.ts changed, reloading triggers"}}
+[debug] [2026-01-07T22:45:46.593Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-01-07T22:45:49.302Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.10.1",
+    "firebase-functions": "^4.6.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "^18.19.0",
+    "typescript": "^5.3.3",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2026-01-07T22:45:49.302Z] Building nodejs source
+[debug] [2026-01-07T22:45:49.302Z] Failed to find version of module node: reached end of search path K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules
+[warn] !  functions: Your requested "node" version "18" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env.local. 
+[info] i  functions: You are using a version of firebase-functions SDK (4.9.0) that does not have support for the newest Firebase Extensions features. Please update firebase-functions SDK to >=5.1.0 to use them correctly 
+[debug] [2026-01-07T22:45:49.304Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-01-07T22:45:49.317Z] Found firebase-functions binary at 'K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8005
+
+[debug] [2026-01-07T22:45:50.253Z] Got response from /__/functions.yaml {"endpoints":{"chatbot":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"chatbot"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: chatbot. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: chatbot."}}
+[debug] [2026-01-07T22:45:54.291Z] [worker-pool] Shutting down IDLE worker (us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-chatbot)"}}
+[debug] [2026-01-07T22:45:54.291Z] [worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: FINISHING"}}
+[debug] [2026-01-07T22:45:54.309Z] [worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: exited"}}
+[debug] [2026-01-07T22:45:54.310Z] [worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-7c7ad5f8-5af9-410f-87a7-1d2ef140c082]: FINISHED"}}
+[debug] [2026-01-07T22:48:02.945Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\chatbot.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\chatbot.js.map changed, reloading triggers"}}
+[debug] [2026-01-07T22:48:02.947Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\chatbot.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\chatbot.js changed, reloading triggers"}}
+[debug] [2026-01-07T22:48:02.952Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\index.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\index.js.map changed, reloading triggers"}}
+[debug] [2026-01-07T22:48:02.954Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\index.js changed, reloading triggers"}}
+[debug] [2026-01-07T22:48:03.963Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-01-07T22:48:06.750Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.10.1",
+    "firebase-functions": "^4.6.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "^18.19.0",
+    "typescript": "^5.3.3",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2026-01-07T22:48:06.750Z] Building nodejs source
+[debug] [2026-01-07T22:48:06.750Z] Failed to find version of module node: reached end of search path K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules
+[warn] !  functions: Your requested "node" version "18" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env.local. 
+[info] i  functions: You are using a version of firebase-functions SDK (4.9.0) that does not have support for the newest Firebase Extensions features. Please update firebase-functions SDK to >=5.1.0 to use them correctly 
+[debug] [2026-01-07T22:48:06.752Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-01-07T22:48:06.764Z] Found firebase-functions binary at 'K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8809
+
+[debug] [2026-01-07T22:48:07.695Z] Got response from /__/functions.yaml {"endpoints":{"chatbot":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"chatbot"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: chatbot. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: chatbot."}}
+[debug] [2026-01-07T22:48:23.279Z] [work-queue] {"queuedWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T22:48:23.279Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T22:48:23.280Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T22:48:23.279Z"],"workRunningCount":1}
+[debug] [2026-01-07T22:48:23.280Z] Accepted request POST /mini-bot-7a21d/us-central1/chatbot --> us-central1-chatbot
+[debug] [2026-01-07T22:48:23.282Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2026-01-07T22:48:23.282Z] [functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/"}}
+[debug] [2026-01-07T22:48:23.282Z] [worker-pool] Cleaned up workers for us-central1-chatbot: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-chatbot: 1 --> 0"}}
+[info] i  functions: Loaded environment variables from .env.local. 
+[debug] [2026-01-07T22:48:23.293Z] [worker-pool] addWorker(us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-chatbot)"}}
+[debug] [2026-01-07T22:48:23.294Z] [worker-pool] Adding worker with key us-central1-chatbot, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-chatbot, total=1"}}
+[debug] [2026-01-07T22:48:28.065Z] [runtime-status] [37180] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2026-01-07T22:48:28.069Z] [runtime-status] [37180] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.9.0","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.9.0\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2026-01-07T22:48:28.070Z] [runtime-status] [37180] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2026-01-07T22:48:28.073Z] [runtime-status] [37180] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.9.0","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.9.0\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2026-01-07T22:48:28.436Z] [runtime-status] [37180] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2026-01-07T22:48:28.441Z] [runtime-status] [37180] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.9.0","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.9.0\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2026-01-07T22:48:28.600Z] [runtime-status] [37180] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.11.1","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2026-01-07T22:48:28.606Z] [runtime-status] [37180] initializeApp(DEFAULT) {"storageBucket":"mini-bot-7a21d.firebasestorage.app","projectId":"mini-bot-7a21d"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] initializeApp(DEFAULT) {\"storageBucket\":\"mini-bot-7a21d.firebasestorage.app\",\"projectId\":\"mini-bot-7a21d\"}"}}
+[debug] [2026-01-07T22:48:28.619Z] [runtime-status] [37180] Functions runtime initialized. {"cwd":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions","node_version":"24.12.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] Functions runtime initialized. {\"cwd\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\",\"node_version\":\"24.12.0\"}"}}
+[debug] [2026-01-07T22:48:28.619Z] [runtime-status] [37180] Listening to port: \\?\pipe\fire_emu_949785876d35d739 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [37180] Listening to port: \\\\?\\pipe\\fire_emu_949785876d35d739"}}
+[debug] [2026-01-07T22:48:28.719Z] [worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: IDLE"}}
+[debug] [2026-01-07T22:48:28.719Z] [worker-pool] submitRequest(triggerId=us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-chatbot)"}}
+[info] i  functions: Beginning execution of "us-central1-chatbot" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Beginning execution of \"us-central1-chatbot\""}}
+[debug] [2026-01-07T22:48:28.720Z] [worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: BUSY"}}
+[info] >  Error en el chatbot: TypeError: Cannot read properties of undefined (reading 'now') {"user":"Error en el chatbot: TypeError: Cannot read properties of undefined (reading 'now')","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"\u001b[90m> \u001b[39m Error en el chatbot: TypeError: Cannot read properties of undefined (reading 'now')"}}
+[info] >      at chatbotHandler (K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\chatbot.js:140:50) {"user":"    at chatbotHandler (K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\chatbot.js:140:50)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"\u001b[90m> \u001b[39m     at chatbotHandler (K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\chatbot.js:140:50)"}}
+[info] >      at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {"user":"    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"\u001b[90m> \u001b[39m     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"}}
+[debug] [2026-01-07T22:48:29.369Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-chatbot" in 649.4667ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finished \"us-central1-chatbot\" in 649.4667ms"}}
+[debug] [2026-01-07T22:48:29.370Z] [worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: IDLE"}}
+[debug] [2026-01-07T22:48:29.370Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2026-01-07T22:48:29.370Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2026-01-07T22:48:29.370Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T23:01:15.043Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\src\chatbot.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\src\\chatbot.ts changed, reloading triggers"}}
+[debug] [2026-01-07T23:01:16.057Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-01-07T23:01:18.672Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.10.1",
+    "firebase-functions": "^4.6.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "^18.19.0",
+    "typescript": "^5.3.3",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2026-01-07T23:01:18.672Z] Building nodejs source
+[debug] [2026-01-07T23:01:18.672Z] Failed to find version of module node: reached end of search path K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules
+[warn] !  functions: Your requested "node" version "18" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env.local. 
+[info] i  functions: You are using a version of firebase-functions SDK (4.9.0) that does not have support for the newest Firebase Extensions features. Please update firebase-functions SDK to >=5.1.0 to use them correctly 
+[debug] [2026-01-07T23:01:18.674Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-01-07T23:01:18.689Z] Found firebase-functions binary at 'K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8183
+
+[debug] [2026-01-07T23:01:19.624Z] Got response from /__/functions.yaml {"endpoints":{"chatbot":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"chatbot"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: chatbot. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: chatbot."}}
+[debug] [2026-01-07T23:01:23.666Z] [worker-pool] Shutting down IDLE worker (us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-chatbot)"}}
+[debug] [2026-01-07T23:01:23.666Z] [worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: FINISHING"}}
+[debug] [2026-01-07T23:01:23.682Z] [worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: exited"}}
+[debug] [2026-01-07T23:01:23.683Z] [worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-199ad4cf-e731-443b-8071-97c401299426]: FINISHED"}}
+[debug] [2026-01-07T23:01:34.488Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\chatbot.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\chatbot.js.map changed, reloading triggers"}}
+[debug] [2026-01-07T23:01:34.489Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\chatbot.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\chatbot.js changed, reloading triggers"}}
+[debug] [2026-01-07T23:01:34.497Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\index.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\index.js.map changed, reloading triggers"}}
+[debug] [2026-01-07T23:01:34.499Z] File K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\lib\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\lib\\index.js changed, reloading triggers"}}
+[debug] [2026-01-07T23:01:35.510Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-01-07T23:01:38.437Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.10.1",
+    "firebase-functions": "^4.6.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "^18.19.0",
+    "typescript": "^5.3.3",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2026-01-07T23:01:38.438Z] Building nodejs source
+[debug] [2026-01-07T23:01:38.438Z] Failed to find version of module node: reached end of search path K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules
+[warn] !  functions: Your requested "node" version "18" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env.local. 
+[info] i  functions: You are using a version of firebase-functions SDK (4.9.0) that does not have support for the newest Firebase Extensions features. Please update firebase-functions SDK to >=5.1.0 to use them correctly 
+[debug] [2026-01-07T23:01:38.440Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-01-07T23:01:38.455Z] Found firebase-functions binary at 'K:\Desarrollo\XUMTECH\Sam_MiniBot\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8193
+
+[debug] [2026-01-07T23:01:39.382Z] Got response from /__/functions.yaml {"endpoints":{"chatbot":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"chatbot"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: chatbot. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: chatbot."}}
+[debug] [2026-01-07T23:01:51.951Z] [work-queue] {"queuedWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T23:01:51.950Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T23:01:51.951Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T23:01:51.950Z"],"workRunningCount":1}
+[debug] [2026-01-07T23:01:51.951Z] Accepted request POST /mini-bot-7a21d/us-central1/chatbot --> us-central1-chatbot
+[debug] [2026-01-07T23:01:51.953Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2026-01-07T23:01:51.953Z] [functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/"}}
+[debug] [2026-01-07T23:01:51.953Z] [worker-pool] Cleaned up workers for us-central1-chatbot: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-chatbot: 1 --> 0"}}
+[info] i  functions: Loaded environment variables from .env.local. 
+[debug] [2026-01-07T23:01:51.964Z] [worker-pool] addWorker(us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-chatbot)"}}
+[debug] [2026-01-07T23:01:51.964Z] [worker-pool] Adding worker with key us-central1-chatbot, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-chatbot, total=1"}}
+[debug] [2026-01-07T23:01:56.757Z] [runtime-status] [6004] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2026-01-07T23:01:56.760Z] [runtime-status] [6004] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.9.0","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.9.0\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2026-01-07T23:01:56.761Z] [runtime-status] [6004] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2026-01-07T23:01:56.763Z] [runtime-status] [6004] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.9.0","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.9.0\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2026-01-07T23:01:57.223Z] [runtime-status] [6004] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2026-01-07T23:01:57.230Z] [runtime-status] [6004] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.9.0","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.9.0\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2026-01-07T23:01:57.430Z] [runtime-status] [6004] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.11.1","resolution":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2026-01-07T23:01:57.441Z] [runtime-status] [6004] initializeApp(DEFAULT) {"storageBucket":"mini-bot-7a21d.firebasestorage.app","projectId":"mini-bot-7a21d"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] initializeApp(DEFAULT) {\"storageBucket\":\"mini-bot-7a21d.firebasestorage.app\",\"projectId\":\"mini-bot-7a21d\"}"}}
+[debug] [2026-01-07T23:01:57.460Z] [runtime-status] [6004] Functions runtime initialized. {"cwd":"K:\\Desarrollo\\XUMTECH\\Sam_MiniBot\\functions","node_version":"24.12.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] Functions runtime initialized. {\"cwd\":\"K:\\\\Desarrollo\\\\XUMTECH\\\\Sam_MiniBot\\\\functions\",\"node_version\":\"24.12.0\"}"}}
+[debug] [2026-01-07T23:01:57.460Z] [runtime-status] [6004] Listening to port: \\?\pipe\fire_emu_f77f5733238f007c {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[runtime-status] [6004] Listening to port: \\\\?\\pipe\\fire_emu_f77f5733238f007c"}}
+[debug] [2026-01-07T23:01:57.502Z] [worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE"}}
+[debug] [2026-01-07T23:01:57.502Z] [worker-pool] submitRequest(triggerId=us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-chatbot)"}}
+[info] i  functions: Beginning execution of "us-central1-chatbot" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Beginning execution of \"us-central1-chatbot\""}}
+[debug] [2026-01-07T23:01:57.502Z] [worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: BUSY"}}
+[debug] [2026-01-07T23:01:58.183Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-chatbot" in 680.9768ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finished \"us-central1-chatbot\" in 680.9768ms"}}
+[debug] [2026-01-07T23:01:58.184Z] [worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE"}}
+[debug] [2026-01-07T23:01:58.184Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2026-01-07T23:01:58.184Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2026-01-07T23:01:58.184Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T23:02:59.124Z] [work-queue] {"queuedWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T23:02:59.124Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T23:02:59.124Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T23:02:59.124Z"],"workRunningCount":1}
+[debug] [2026-01-07T23:02:59.124Z] Accepted request POST /mini-bot-7a21d/us-central1/chatbot --> us-central1-chatbot
+[debug] [2026-01-07T23:02:59.126Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2026-01-07T23:02:59.126Z] [functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/"}}
+[debug] [2026-01-07T23:02:59.127Z] [worker-pool] submitRequest(triggerId=us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-chatbot)"}}
+[info] i  functions: Beginning execution of "us-central1-chatbot" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Beginning execution of \"us-central1-chatbot\""}}
+[debug] [2026-01-07T23:02:59.127Z] [worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: BUSY"}}
+[debug] [2026-01-07T23:02:59.156Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-chatbot" in 28.5155ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finished \"us-central1-chatbot\" in 28.5155ms"}}
+[debug] [2026-01-07T23:02:59.156Z] [worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE"}}
+[debug] [2026-01-07T23:02:59.157Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2026-01-07T23:02:59.157Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2026-01-07T23:02:59.157Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T23:41:17.680Z] [work-queue] {"queuedWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T23:41:17.680Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T23:41:17.681Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T23:41:17.680Z"],"workRunningCount":1}
+[debug] [2026-01-07T23:41:17.682Z] Accepted request OPTIONS /mini-bot-7a21d/us-central1/chatbot --> us-central1-chatbot
+[debug] [2026-01-07T23:41:17.687Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2026-01-07T23:41:17.688Z] [functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/"}}
+[debug] [2026-01-07T23:41:17.688Z] [worker-pool] submitRequest(triggerId=us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-chatbot)"}}
+[info] i  functions: Beginning execution of "us-central1-chatbot" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Beginning execution of \"us-central1-chatbot\""}}
+[debug] [2026-01-07T23:41:17.691Z] [worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: BUSY"}}
+[debug] [2026-01-07T23:41:17.697Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-chatbot" in 6.4319ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finished \"us-central1-chatbot\" in 6.4319ms"}}
+[debug] [2026-01-07T23:41:17.698Z] [worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE"}}
+[debug] [2026-01-07T23:41:17.698Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2026-01-07T23:41:17.698Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2026-01-07T23:41:17.698Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T23:41:17.700Z] [work-queue] {"queuedWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T23:41:17.700Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2026-01-07T23:41:17.700Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/mini-bot-7a21d/us-central1/chatbot-2026-01-07T23:41:17.700Z"],"workRunningCount":1}
+[debug] [2026-01-07T23:41:17.700Z] Accepted request POST /mini-bot-7a21d/us-central1/chatbot --> us-central1-chatbot
+[debug] [2026-01-07T23:41:17.704Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2026-01-07T23:41:17.704Z] [functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/mini-bot-7a21d/us-central1/chatbot, mapping to path=/"}}
+[debug] [2026-01-07T23:41:17.704Z] [worker-pool] submitRequest(triggerId=us-central1-chatbot) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-chatbot)"}}
+[info] i  functions: Beginning execution of "us-central1-chatbot" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Beginning execution of \"us-central1-chatbot\""}}
+[debug] [2026-01-07T23:41:17.705Z] [worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: BUSY"}}
+[debug] [2026-01-07T23:41:17.741Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-chatbot" in 36.198ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finished \"us-central1-chatbot\" in 36.198ms"}}
+[debug] [2026-01-07T23:41:17.742Z] [worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"[worker-us-central1-chatbot-8c49d2a5-908f-4e84-bc0f-e7bcbb19e601]: IDLE"}}
+[debug] [2026-01-07T23:41:17.742Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2026-01-07T23:41:17.742Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-chatbot"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2026-01-07T23:41:17.743Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}

@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    /* Plataforma */
+    "target": "ES2020",
+    "lib": ["ES2020"],
+
+    /* Módulos */
+    "module": "commonjs",
+    "moduleResolution": "node",
+
+    /* Estructura del proyecto */
+    "rootDir": "src",
+    "outDir": "lib",
+    "sourceMap": true,
+
+    /* Interoperabilidad */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Calidad de código */
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* 🔑 CLAVE PARA TU ERROR ACTUAL */
+    "skipLibCheck": true
+  },
+
+  "include": ["src"],
+  "exclude": ["node_modules", "lib"]
+}

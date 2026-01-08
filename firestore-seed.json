@@ -1,0 +1,60 @@
+{
+  "chatbot_responses": [
+    {
+      "id": "1",
+      "question": "¿Qué es Firebase?",
+      "answer": "Firebase es una plataforma de Google para el desarrollo de aplicaciones web y móviles que ofrece servicios como base de datos en tiempo real, autenticación, hosting y más."
+    },
+    {
+      "id": "2",
+      "question": "¿Qué es TypeScript?",
+      "answer": "TypeScript es un lenguaje de programación desarrollado por Microsoft que es un superconjunto de JavaScript, añadiendo tipos estáticos y clases basadas en prototipos."
+    },
+    {
+      "id": "3",
+      "question": "¿Qué es React?",
+      "answer": "React es una biblioteca JavaScript creada por Facebook para construir interfaces de usuario, especialmente aplicaciones web de una sola página."
+    },
+    {
+      "id": "4",
+      "question": "¿Qué es una función serverless?",
+      "answer": "Una función serverless es un modelo de ejecución donde el proveedor de la nube ejecuta el código y gestiona la asignación de recursos dinámicamente, sin necesidad de que el desarrollador administre servidores."
+    },
+    {
+      "id": "5",
+      "question": "¿Qué es Cloud Firestore?",
+      "answer": "Cloud Firestore es una base de datos NoSQL flexible y escalable de Firebase para el desarrollo de aplicaciones móviles y web. Ofrece sincronización en tiempo real, soporte offline y consultas escalables."
+    },
+    {
+      "id": "6",
+      "question": "¿Qué es una SPA?",
+      "answer": "Una SPA (Single Page Application) es una aplicación web que funciona dentro de una única página web y no requiere recargar la página durante su uso."
+    },
+    {
+      "id": "7",
+      "question": "¿Qué es Tailwind CSS?",
+      "answer": "Tailwind CSS es un framework de CSS utilitario que permite construir diseños personalizados rápidamente directamente en el marcado HTML."
+    },
+    {
+      "id": "8",
+      "question": "¿Qué es CORS?",
+      "answer": "CORS (Cross-Origin Resource Sharing) es un mecanismo que permite que los recursos de una página web sean solicitados desde otro dominio diferente al que sirvió el primer recurso."
+    },
+    {
+      "id": "9",
+      "question": "¿Qué es una API REST?",
+      "answer": "Una API REST (Representational State Transfer) es un estilo de arquitectura para diseñar aplicaciones de red que utiliza métodos HTTP estándar como GET, POST, PUT y DELETE."
+    },
+    {
+      "id": "10",
+      "question": "¿Qué es una Cloud Function?",
+      "answer": "Una Cloud Function es un código que se ejecuta en respuesta a eventos y se gestiona automáticamente sin necesidad de provisionar o administrar servidores."
+    }
+  ],
+  "chatbot_config": [
+    {
+      "id": "default_response",
+      "value": "Lo siento, no entiendo tu pregunta. Puedes preguntarme sobre Firebase, TypeScript, React, funciones serverless, Cloud Firestore, SPA, Tailwind CSS, CORS, API REST o Cloud Functions."
+    }
+  ]
+}
