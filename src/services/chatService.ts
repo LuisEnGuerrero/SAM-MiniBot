@@ -1,25 +1,42 @@
-import { ChatRequest, ChatResponse } from '../types';
+// src/services/chatService.ts
 
-// Base de la API:
-// - En local/emulador: definida por variable de entorno
-// - En producción: usamos rewrite de Firebase Hosting (/chatbot)
-const API_BASE = process.env.REACT_APP_API_BASE;
-const CHAT_ENDPOINT = API_BASE ? `${API_BASE}/chatbot` : '/chatbot';
+import { ChatRequest, ChatResponse, MiniBotRuntimeConfig } from '../types';
 
-/**
- * Envía un mensaje al bot y obtiene una respuesta
- * @param message Mensaje del usuario
- * @param sessionId ID de sesión para mantener contexto (opcional)
- * @returns Respuesta del bot
- */
+declare global {
+  interface Window {
+    __SAM_MINIBOT_CONFIG__?: MiniBotRuntimeConfig;
+  }
+}
+
+// --------------------------------------------------
+// Runtime config (inyectable por widget o script)
+// --------------------------------------------------
+
+const runtimeConfig: MiniBotRuntimeConfig =
+  window.__SAM_MINIBOT_CONFIG__ || {
+    clientId: 'sam-minibot-prototipe'
+  };
+
+const CLIENT_ID = runtimeConfig.clientId;
+
+// 🔴 CLAVE: en producción SIEMPRE usamos /chatbot
+// Firebase Hosting hace el rewrite al Cloud Function
+const CHAT_ENDPOINT = '/chatbot';
+
+// --------------------------------------------------
+// Servicio principal
+// --------------------------------------------------
+
 export const sendMessage = async (
   message: string,
   sessionId?: string
 ): Promise<ChatResponse> => {
   try {
     const requestData: ChatRequest = {
+      clientId: CLIENT_ID,
       message,
-      sessionId: sessionId || generateSessionId()
+      sessionId: sessionId || generateSessionId(),
+      channel: 'web'
     };
 
     const response = await fetch(CHAT_ENDPOINT, {
@@ -32,11 +49,12 @@ export const sendMessage = async (
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Error ${response.status}: ${errorText}`);
+      throw new Error(
+        `[ChatService] Error ${response.status}: ${errorText}`
+      );
     }
 
-    const data = (await response.json()) as ChatResponse;
-    return data;
+    return (await response.json()) as ChatResponse;
 
   } catch (error) {
     console.error('[ChatService] Error al enviar mensaje:', error);
@@ -44,13 +62,10 @@ export const sendMessage = async (
   }
 };
 
-/**
- * Genera un ID de sesión aleatorio
- * @returns ID de sesión
- */
-const generateSessionId = (): string => {
-  return (
-    Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15)
-  );
-};
+// --------------------------------------------------
+// Utils
+// --------------------------------------------------
+
+const generateSessionId = (): string =>
+  Math.random().toString(36).substring(2, 15) +
+  Math.random().toString(36).substring(2, 15);

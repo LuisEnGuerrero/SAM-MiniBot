@@ -3,6 +3,7 @@ import ChatBot from './components/ChatBot.tsx';
 import Hero from './components/landing/Hero.tsx';
 import Features from './components/landing/Features.tsx';
 import HowItWorks from './components/landing/HowItWorks.tsx';
+import MinibotForm from './components/landing/MinibotForm.tsx';
 import TechStack from './components/landing/TechStack.tsx';
 import Footer from './components/landing/Footer.tsx';
 import './App.css';
@@ -24,6 +25,9 @@ function App() {
 
       {/* Sección de "Cómo Funciona" */}
       <HowItWorks />
+
+      {/* Sección del Formulario Minibot */}
+      <MinibotForm />
 
       {/* Sección de Stack Tecnológico */}
       <TechStack />

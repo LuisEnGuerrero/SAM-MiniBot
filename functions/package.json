@@ -2,6 +2,7 @@
   "name": "functions",
   "scripts": {
     "build": "tsc",
+    "lint": "echo \"Lint skipped\"",
     "build:watch": "tsc --watch",
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
@@ -10,19 +11,24 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "firebase-admin": "^11.10.1",
     "firebase-functions": "^4.6.0",
-    "cors": "^2.8.5"
+    "nodemailer": "^7.0.12",
+    "openai": "^6.15.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/node": "^18.19.0",
-    "typescript": "^5.3.3",
-    "firebase-functions-test": "^3.1.0"
+    "@types/nodemailer": "^7.0.4",
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^5.3.3"
   },
   "private": true
 }

@@ -101,33 +101,131 @@ chatbot-prototype/
 ### 5. Despliegue a Producción
 
 1. Construye la aplicación de React: `npm run build`
-2. Despliega todo a Firebase: `firebase deploy`
+2. Construye las Functions tras `cd functions` corre: `npm run build`
+3. Habilita temporalmente los comandos legacy en firebase desde la raíz del proyecto: `firebase experiments:enable legacyRuntimeConfigCommands` (Opción que será deprecada en 2026)
+4. Lanza el Script para cargar las variables de entorno alojadas en .env: `.\scripts\set-firebase-config.ps1` (ver env.txt de ejemplo)
+5. Despliega las Functions: `firebase deploy --only functions`
+6. 
 
-## Resolución de Problemas Comunes
-
-### Problema: "No se puede ver nada en la vista previa"
-
-**Causas posibles y soluciones:**
-
-1. **Estructura de carpetas incorrecta**: Asegúrate de que todos los archivos estén en las carpetas correctas según la estructura descrita.
-
-2. **Dependencias no instaladas**: Ejecuta `npm install` tanto en la raíz del proyecto como en la carpeta `functions`.
-
-3. **Configuración de Firebase incorrecta**: Verifica que el archivo `.firebaserc` contenga el ID correcto de tu proyecto de Firebase.
-
-4. **URL de la función incorrecta**: Asegúrate de que la URL en `src/services/chatService.ts` coincida con tu ID de proyecto de Firebase.
-
-5. **Emuladores no iniciados**: Asegúrate de que los emuladores de Firebase estén funcionando correctamente con `firebase emulators:start`.
-
-6. **Datos no cargados en Firestore**: Verifica que hayas importado los datos iniciales en Firestore a través de la interfaz del emulador.
-
-7. **Problemas con Tailwind CSS**: Si los estilos no se aplican correctamente, verifica que Tailwind CSS esté configurado correctamente y que las clases CSS se estén aplicando en los componentes.
-
-8. **Errores en la consola del navegador**: Abre las herramientas de desarrollador de tu navegador y busca errores de JavaScript o de red que puedan estar impidiendo que la aplicación se cargue correctamente.
-
-Si sigues estos pasos y verificas cada punto, deberías poder ver y ejecutar correctamente la aplicación del chatbot en tu entorno local.
+## Estructura Firestore
 
 ---
+
+### Para un producto SaaS sólido
+
+´´´bash
+clients (collection)
+ └── {clientId} (document)
+     ├── name: string
+     ├── domain: string
+     ├── active: boolean
+     ├── createdAt: timestamp
+     ├── llm: {
+     │     enabled: boolean
+     │     provider: 'openai' | 'gemini' | 'deepseek'
+     │     model: string
+     │   }
+     │
+     ├── chatbot_config (subcollection)
+     │    └── default (document)
+     │         └── value: string
+     │
+     ├── chatbot_responses (subcollection)   ← FAQs
+     │    └── {faqId}
+     │         ├── question: string
+     │         ├── answer: string
+     │         ├── active: boolean
+     │         └── order: number
+     │
+     ├── context (subcollection)
+     │    └── pdf (document)
+     │         ├── enabled: boolean
+     │         ├── source: 'pdf' | 'text'
+     │         ├── content: string   ← texto plano extraído
+     │         └── updatedAt: timestamp
+     │
+     └── chat_conversations (subcollection)
+          └── {conversationId}
+               ├── sessionId: string
+               ├── userMessage: string
+               ├── botResponse: string
+               ├── source: 'faq' | 'default' | 'llm'
+               ├── confidence: number
+               └── timestamp: timestamp
+
+´´´
+
+---
+
+## SEGURIDAD
+
+### REGLAS DE ACCESO FIRESTORE Y FIREBASE BUCKET
+
+Las siguientes reglas de seguridad de Firestore aseguran que ningún cliente pueda leer o escribir datos directamente en la base de datos. Tampoco el Frontend puede hacerlo solo las Firebase Functions con la dirección del Backend.
+
+```javascript
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================
+    // CLIENTES (núcleo SaaS)
+    // ===============================
+    match /clients/{clientId} {
+
+      // 🔴 El frontend NO puede leer ni escribir clientes
+      allow read, write: if false;
+
+      // -------------------------------
+      // Subcolecciones internas
+      // -------------------------------
+      match /{subcollection=**}/{docId} {
+        // 🔴 Todo acceso directo bloqueado
+        allow read, write: if false;
+      }
+    }
+
+    // -------------------------------
+    // Fallback: bloquear todo lo demás
+    // -------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+```
+
+### Storage de almacenamiento para PDF de contexto para GPTs
+
+Las siguientes reglas de seguridad de Firebase Storage aseguran que ningún cliente pueda leer o escribir archivos directamente en el bucket de almacenamiento. Solo las Firebase Functions pueden hacerlo.
+
+```javascript
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ===============================
+    // PDFs y assets por cliente
+    // ===============================
+    match /clients/{clientId}/{allPaths=**} {
+
+      // ❌ El frontend no puede leer ni escribir
+      allow read, write: if false;
+    }
+
+    // -------------------------------
+    // Bloquear todo lo demás
+    // -------------------------------
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+```
 
 ### Nota de seguridad
 
@@ -136,3 +234,7 @@ Algunas vulnerabilidades reportadas por npm audit provienen de dependencias inte
 
 Para este prototipo y prueba técnica se priorizó estabilidad y compatibilidad.
 En un roadmap de producción se contempla migrar el frontend a Vite o Next.js para eliminar estas dependencias heredadas.
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.

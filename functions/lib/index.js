@@ -32,24 +32,46 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.chatbot = void 0;
+exports.requestMiniBot = exports.loadClientConfigFn = exports.chatbot = void 0;
+const admin = __importStar(require("firebase-admin"));
 const functions = __importStar(require("firebase-functions"));
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const chatbot_1 = require("./chatbot");
-// Configuración de CORS para permitir solicitudes desde nuestro frontend
-const cors = require('cors')({
-    origin: true // En producción, restringe esto a tu dominio: origin: ['https://tudominio.com']
-});
-// Exportamos la función como una Cloud Function
-exports.chatbot = functions.https.onRequest((request, response) => {
-    // Aplicamos middleware de CORS
-    cors(request, response, () => {
-        // Solo permitimos métodos POST
-        if (request.method !== 'POST') {
-            return response.status(405).json({ error: 'Método no permitido' });
+const loadClientConfig_1 = require("./loadClientConfig");
+const requestMiniBot_1 = require("./requestMiniBot");
+Object.defineProperty(exports, "requestMiniBot", { enumerable: true, get: function () { return requestMiniBot_1.requestMiniBot; } });
+admin.initializeApp();
+// ==========================
+// CORS (abierto por ahora)
+// ==========================
+const corsHandler = (0, cors_1.default)({ origin: true });
+// ==========================
+// CHATBOT (API pública)
+// ==========================
+exports.chatbot = functions.https.onRequest((req, res) => {
+    corsHandler(req, res, () => {
+        if (req.method !== 'POST') {
+            res.status(405).json({ error: 'Método no permitido' });
+            return;
         }
-        // Llamamos al manejador del chatbot
-        return (0, chatbot_1.chatbotHandler)(request, response);
+        (0, chatbot_1.chatbotHandler)(req, res);
     });
 });
+// ==========================
+// LOAD CLIENT CONFIG (ADMIN)
+// ==========================
+const loadClientApp = (0, express_1.default)();
+// 🔴 ESTO ES CRÍTICO
+loadClientApp.use(express_1.default.json({ limit: '2mb' }));
+// ❌ NO auth
+// ❌ NO headers
+// ❌ NO secrets
+// ❌ NO OAuth
+loadClientApp.post('/', loadClientConfig_1.loadClientConfig);
+exports.loadClientConfigFn = functions.https.onRequest(loadClientApp);
 //# sourceMappingURL=index.js.map

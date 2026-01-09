@@ -1,25 +1,51 @@
-// Interfaz para los mensajes del chat
+// src/types/index.ts
+
+// ----------------------------
+// UI types
+// ----------------------------
 export interface ChatMessage {
   id: string;
   text: string;
   sender: 'user' | 'bot';
   timestamp: Date;
+  meta?: {
+    confidence?: number;
+    matched?: boolean;
+    source?: 'faq' | 'llm' | 'system';
+  };
 }
 
-// Interfaz para la respuesta del servicio del chatbot
+// ----------------------------
+// API contract
+// ----------------------------
+export interface ChatRequest {
+  clientId: string;
+  message: string;
+  sessionId?: string;
+  // Futuro: metadata del canal / widget
+  channel?: 'web' | 'widget' | 'api';
+  locale?: string; // 'es', 'en', etc.
+}
+
 export interface ChatResponse {
   response: string;
   sessionId: string;
   confidence: number;
   matched: boolean;
-  timestamp?: {
-    _seconds: number;
-    _nanoseconds: number;
-  };
+
+  // nuestro backend devuelve ISO string (estable)
+  timestamp: string;
+
+  // Futuro: trazabilidad del motor
+  source?: 'faq' | 'llm';
+  model?: string; // ej: 'gpt-4o-mini' / 'gemini-1.5-flash'
 }
 
-// Interfaz para la solicitud al servicio del chatbot
-export interface ChatRequest {
-  message: string;
-  sessionId?: string;
+// ----------------------------
+// SaaS runtime config (frontend)
+// ----------------------------
+export interface MiniBotRuntimeConfig {
+  clientId: string;
+  apiBase?: string; // ej: https://tudominio.com (si no es mismo origen)
+  mode?: 'faq' | 'hybrid' | 'llm';
 }

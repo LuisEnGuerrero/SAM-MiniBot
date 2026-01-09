@@ -1,4 +1,6 @@
 "use strict";
+// functions/src/chatbot.ts
+// VERSION: 4.0.0 — SaaS + Domain Guard + FAQ + PDF + Multi-LLM
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -33,118 +35,141 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getDB = getDB;
 exports.chatbotHandler = chatbotHandler;
 const admin = __importStar(require("firebase-admin"));
-// Inicializamos el SDK de Admin si no está inicializado
-if (!admin.apps.length) {
-    admin.initializeApp();
+const faq_service_1 = require("./services/faq.service");
+const context_service_1 = require("./services/context.service");
+const llm_service_1 = require("./services/llm.service");
+// --------------------
+// Init Firebase Admin
+// --------------------
+function getDB() {
+    return admin.firestore();
 }
-const db = admin.firestore();
-// Función para calcular similitud entre dos cadenas
-function calculateSimilarity(str1, str2) {
-    const longer = str1.length > str2.length ? str1 : str2;
-    const shorter = str1.length > str2.length ? str2 : str1;
-    if (longer.length === 0)
-        return 1.0;
-    const editDistance = levenshteinDistance(longer, shorter);
-    return (longer.length - editDistance) / longer.length;
+// --------------------
+// Helper: domain check
+// --------------------
+function isDomainAllowed(origin, allowed) {
+    // Allow non-browser tools (Postman, curl, backend)
+    if (!origin)
+        return true;
+    if (!allowed)
+        return false;
+    const domains = Array.isArray(allowed) ? allowed : [allowed];
+    return domains.some(domain => origin.includes(domain));
 }
-// Distancia de Levenshtein
-function levenshteinDistance(str1, str2) {
-    const matrix = [];
-    for (let i = 0; i <= str2.length; i++) {
-        matrix[i] = [i];
-    }
-    for (let j = 0; j <= str1.length; j++) {
-        matrix[0][j] = j;
-    }
-    for (let i = 1; i <= str2.length; i++) {
-        for (let j = 1; j <= str1.length; j++) {
-            if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            }
-            else {
-                matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
-            }
-        }
-    }
-    return matrix[str2.length][str1.length];
-}
-// Función principal del chatbot
+// --------------------
+// Handler
+// --------------------
 async function chatbotHandler(request, response) {
     try {
-        const { message, sessionId = 'default' } = request.body;
+        const { clientId, message, sessionId = 'default' } = request.body;
+        // --------------------
+        // Validations
+        // --------------------
+        if (!clientId) {
+            return response.status(400).json({ error: 'clientId es requerido' });
+        }
         if (!message) {
             return response.status(400).json({ error: 'El mensaje es requerido' });
         }
-        // Normalizamos el mensaje
-        const normalizedMessage = message
-            .toLowerCase()
-            .trim()
-            .replace(/[^\w\s]/gi, '');
-        // Obtenemos respuestas configuradas
-        const responsesSnapshot = await db.collection('chatbot_responses').get();
-        if (responsesSnapshot.empty) {
-            return response.status(500).json({ error: 'No hay respuestas configuradas' });
+        const db = getDB();
+        const clientRef = db.collection('clients').doc(clientId);
+        const clientSnap = await clientRef.get();
+        if (!clientSnap.exists) {
+            return response.status(404).json({
+                error: 'Cliente no encontrado'
+            });
         }
-        // Buscamos la respuesta más similar
-        let bestMatch = null;
-        let highestSimilarity = 0;
-        responsesSnapshot.forEach(doc => {
-            const data = doc.data();
-            // Protección ante documentos mal formados
-            if (!data.question || !data.answer)
-                return;
-            const normalizedQuestion = data.question
-                .toLowerCase()
-                .trim()
-                .replace(/[^\w\s]/gi, '');
-            const similarity = calculateSimilarity(normalizedMessage, normalizedQuestion);
-            if (similarity > highestSimilarity) {
-                highestSimilarity = similarity;
-                bestMatch = {
-                    question: data.question,
-                    answer: data.answer
-                };
-            }
-        });
-        // Umbral de coincidencia
-        const MATCH_THRESHOLD = 0.6;
-        const isMatch = highestSimilarity >= MATCH_THRESHOLD && bestMatch !== null;
-        // Respuesta por defecto
-        const defaultResponseDoc = await db
-            .collection('chatbot_config')
-            .doc('default_response')
-            .get();
-        const defaultResponse = defaultResponseDoc.exists
-            ? defaultResponseDoc.data()?.value
-            : 'Lo siento, no entiendo tu pregunta.';
-        // Respuesta final (segura)
-        const responseText = isMatch
-            ? bestMatch.answer
-            : defaultResponse;
+        const clientData = clientSnap.data();
+        // --------------------
+        // 🔒 Active check
+        // --------------------
+        if (clientData.active === false) {
+            return response.status(403).json({
+                error: 'Cliente inactivo'
+            });
+        }
+        // --------------------
+        // 🔒 Domain validation
+        // --------------------
+        const origin = request.headers.origin;
+        const domainAllowed = isDomainAllowed(origin, clientData.domain);
+        if (!domainAllowed) {
+            return response.status(403).json({
+                error: 'Dominio no autorizado'
+            });
+        }
+        let responseText;
+        let source;
+        let confidence = 0;
+        // --------------------
+        // 1️⃣ FAQ
+        // --------------------
+        const faqResult = await (0, faq_service_1.resolveFAQ)(clientId, message);
+        if (faqResult && faqResult.confidence >= 0.6) {
+            responseText = faqResult.answer;
+            confidence = faqResult.confidence;
+            source = 'faq';
+        }
+        // --------------------
+        // 2️⃣ LLM
+        // --------------------
+        else if (clientData.llm?.enabled && clientData.llm.provider) {
+            const context = await (0, context_service_1.getClientContext)(clientId);
+            const llmAnswer = await (0, llm_service_1.generateLLMResponse)(clientData.llm.provider, {
+                message,
+                context: context ?? undefined,
+                systemPrompt: clientData.llm.systemPrompt
+            });
+            responseText = llmAnswer;
+            source = 'llm';
+            confidence = 1;
+        }
+        // --------------------
+        // 3️⃣ Default
+        // --------------------
+        else {
+            const defaultConfig = await clientRef
+                .collection('chatbot_config')
+                .doc('default')
+                .get();
+            responseText =
+                defaultConfig.exists && defaultConfig.data()?.value
+                    ? defaultConfig.data().value
+                    : 'Lo siento, no he entendido tu pregunta. ¿Podrías reformularla?';
+            source = 'default';
+            confidence = 0;
+        }
+        // --------------------
+        // Persist conversation
+        // --------------------
         const now = new Date();
-        const chatResponse = {
-            response: responseText,
-            sessionId,
-            confidence: Number(highestSimilarity.toFixed(2)),
-            matched: isMatch,
-            timestamp: now.toISOString()
-        };
-        // Guardamos conversación
-        await db.collection('chat_conversations').add({
+        await clientRef.collection('chat_conversations').add({
             sessionId,
             userMessage: message,
             botResponse: responseText,
-            confidence: Number(highestSimilarity.toFixed(2)),
-            matched: isMatch,
+            source,
+            confidence,
             timestamp: now
         });
-        return response.status(200).json(chatResponse);
+        // --------------------
+        // Response
+        // --------------------
+        return response.status(200).json({
+            response: responseText,
+            sessionId,
+            source,
+            confidence,
+            timestamp: now.toISOString()
+        });
     }
     catch (error) {
-        console.error('Error en el chatbot:', error);
-        return response.status(500).json({ error: 'Error interno del servidor' });
+        console.error('[chatbot] Error:', error);
+        return response.status(500).json({
+            error: 'Lo siento, ha ocurrido un error al procesar tu mensaje. Por favor, inténtalo de nuevo más tarde.'
+        });
     }
 }
 //# sourceMappingURL=chatbot.js.map

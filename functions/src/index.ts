@@ -1,21 +1,49 @@
+import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
+import express from 'express';
+import cors from 'cors';
+
 import { chatbotHandler } from './chatbot';
+import { loadClientConfig } from './loadClientConfig';
+import { requestMiniBot } from './requestMiniBot';
 
-// Configuración de CORS para permitir solicitudes desde nuestro frontend
-const cors = require('cors')({
-  origin: true // En producción, restringe esto a tu dominio: origin: ['https://tudominio.com']
-});
+admin.initializeApp();
 
-// Exportamos la función como una Cloud Function
-export const chatbot = functions.https.onRequest((request, response) => {
-  // Aplicamos middleware de CORS
-  cors(request, response, () => {
-    // Solo permitimos métodos POST
-    if (request.method !== 'POST') {
-      return response.status(405).json({ error: 'Método no permitido' });
+// ==========================
+// CORS (abierto por ahora)
+// ==========================
+const corsHandler = cors({ origin: true });
+
+// ==========================
+// CHATBOT (API pública)
+// ==========================
+export const chatbot = functions.https.onRequest((req, res) => {
+  corsHandler(req, res, () => {
+    if (req.method !== 'POST') {
+      res.status(405).json({ error: 'Método no permitido' });
+      return;
     }
-    
-    // Llamamos al manejador del chatbot
-    return chatbotHandler(request, response);
+    chatbotHandler(req, res);
   });
 });
+
+// ==========================
+// LOAD CLIENT CONFIG (ADMIN)
+// ==========================
+const loadClientApp = express();
+
+// 🔴 ESTO ES CRÍTICO
+loadClientApp.use(express.json({ limit: '2mb' }));
+
+// ❌ NO auth
+// ❌ NO headers
+// ❌ NO secrets
+// ❌ NO OAuth
+loadClientApp.post('/', loadClientConfig);
+
+export const loadClientConfigFn = functions.https.onRequest(loadClientApp);
+
+// ==========================
+// MINI BOT
+// ==========================
+export { requestMiniBot };

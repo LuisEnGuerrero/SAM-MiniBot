@@ -1,0 +1,92 @@
+{
+  "client": {
+    "clientId": "sam-minibot-prototipe",
+    "name": "SAM MiniBot",
+    "domain": "https://mini-bot-7a21d.web.app/",
+    "active": true,
+    "llm": {
+      "enabled": false,
+      "provider": null,
+      "model": null
+    }
+  },
+
+  "chatbot_config": {
+    "default": {
+      "value": "Soy Sam tu asistente virtual. Puedo ayudarte a conocer cómo funciona SAM MiniBot y cómo puede integrarse en tu sitio web."
+    }
+  },
+
+  "chatbot_responses": [
+    {
+      "id": "faq_01",
+      "question": "Hola, saludos, buenas,",
+      "answer": "Hola Soy SAM tu asistente virtual. SAM MiniBot es un asistente conversacional SaaS que puedes integrar en tu sitio web para responder preguntas, guiar usuarios y escalar a inteligencia artificial.",
+      "active": true,
+      "order": 1
+    },
+    {
+      "id": "faq_02",
+      "question": "¿Para qué tipo de negocios sirve SAM MiniBot?",
+      "answer": "SAM MiniBot es ideal para empresas, emprendimientos, instituciones educativas y organizaciones que necesitan atención automatizada y escalable.",
+      "active": true,
+      "order": 2
+    },
+    {
+      "id": "faq_03",
+      "question": "¿Necesito conocimientos técnicos para usarlo?",
+      "answer": "No. SAM MiniBot puede integrarse mediante un script sencillo sin modificar tu backend.",
+      "active": true,
+      "order": 3
+    },
+    {
+      "id": "faq_04",
+      "question": "¿Puedo personalizar las respuestas?",
+      "answer": "Sí. Puedes definir tus propias preguntas y respuestas desde Firestore o un panel administrativo.",
+      "active": true,
+      "order": 4
+    },
+    {
+      "id": "faq_05",
+      "question": "¿SAM MiniBot funciona sin inteligencia artificial?",
+      "answer": "Sí. Funciona perfectamente con preguntas frecuentes incluso sin GPT.",
+      "active": true,
+      "order": 5
+    },
+    {
+      "id": "faq_06",
+      "question": "¿Qué ventaja tiene usar GPT con SAM MiniBot?",
+      "answer": "Permite responder preguntas complejas usando documentos, catálogos o PDFs como contexto.",
+      "active": true,
+      "order": 6
+    },
+    {
+      "id": "faq_07",
+      "question": "¿Los datos de mi empresa están seguros?",
+      "answer": "Sí. Cada cliente tiene su propio espacio aislado en la base de datos.",
+      "active": true,
+      "order": 7
+    },
+    {
+      "id": "faq_08",
+      "question": "¿Puedo usar SAM MiniBot en varias páginas?",
+      "answer": "Sí. Un mismo bot puede funcionar en múltiples sitios del mismo cliente.",
+      "active": true,
+      "order": 8
+    },
+    {
+      "id": "faq_09",
+      "question": "¿SAM MiniBot guarda conversaciones?",
+      "answer": "Sí, de forma opcional, para análisis y mejora del servicio.",
+      "active": true,
+      "order": 9
+    },
+    {
+      "id": "faq_10",
+      "question": "¿Cómo empiezo a usar SAM MiniBot?",
+      "answer": "Puedes contactarnos o seguir la guía de integración disponible en esta página.",
+      "active": true,
+      "order": 10
+    }
+  ]
+}

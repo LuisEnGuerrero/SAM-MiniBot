@@ -5,11 +5,28 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Prototipo de Mini Bot Conversacional" />
-    <title>Mini Bot Conversacional</title>
+    <meta
+      name="description"
+      content="SAM MiniBot — Asistente conversacional SaaS listo para producción"
+    />
+    <title>SAM MiniBot Conversacional</title>
+
+    <!-- =========================
+         SAM MiniBot Runtime Config
+         ========================= -->
+    <script>
+      window.__SAM_MINIBOT_CONFIG__ = {
+        clientId: 'sam-minibot-prototipe',
+        apiBase: '', // vacío = mismo dominio (Firebase Hosting)
+        mode: 'hybrid' // 'faq' | 'hybrid' | 'llm'
+      };
+    </script>
   </head>
+
   <body>
-    <noscript>Necesitas habilitar JavaScript para ejecutar esta aplicación.</noscript>
+    <noscript>
+      Necesitas habilitar JavaScript para ejecutar esta aplicación.
+    </noscript>
     <div id="root"></div>
   </body>
 </html>

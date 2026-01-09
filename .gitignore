@@ -10,3 +10,9 @@ functions/node_modules
 .vscode
 
 GenDocument
+
+**/package-lock.json
+package-lock.json
+
+firebase-debug.log
+firestore-debug.log

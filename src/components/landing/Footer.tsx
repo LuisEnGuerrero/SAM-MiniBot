@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} SAM Mini Bot Assistant. Todos los derechos reservados.
           </p>
           <p className="mt-2 text-sm text-gray-500">
-            Prototipo funcional desarrollado por <a href="https://luisenguerrero.netlify.app" target="_blank" rel="noopener"> Luis Enrique Guerrero.</a>
+            Prototipo funcional desarrollado por <a href="https://luisenguerrero.netlify.app" target="_blank" rel="noopener noreferrer"> Luis Enrique Guerrero.</a>
           </p>
         </div>
       </div>
