@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>SAM MiniBot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Base styles (aislados dentro del iframe) -->
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+        }
+
+        #sam-minibot-root {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-size: 14px;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Root -->
+    <div id="sam-minibot-root">
+        <div class="loading">Inicializando SAM MiniBot…</div>
+    </div>
+
+    <!-- Runtime bootstrap -->
+    <script>
+
+        // =====================================================
+        // 0️⃣ DESIGN TOKENS
+        // =====================================================
+        const DESIGN_TOKENS = {
+            botBg: '#f1f5f9',
+            userBg: '#2563eb',
+            botText: '#0f172a',
+            userText: '#ffffff',
+            borderRadius: '14px',
+            fontSize: '14px',
+            shadow: '0 10px 30px rgba(0,0,0,0.12)',
+        };
+
+        // =====================================================
+        // 1️⃣ RUNTIME STATE
+        // =====================================================
+        let SAM_CONFIG = null;
+
+        // =====================================================
+        // 2️⃣ RECEIVE CONFIG FROM PARENT
+        // =====================================================
+        window.addEventListener('message', (event) => {
+            if (!event.data || event.data.type !== 'SAM_MINIBOT_INIT') return;
+
+            SAM_CONFIG = event.data.payload;
+
+            console.log('[SAM MiniBot] Config recibida:', SAM_CONFIG);
+
+            if (!SAM_CONFIG.clientId || !SAM_CONFIG.apiBase) {
+                showError('Configuración inválida');
+                return;
+            }
+
+            initMiniBot(SAM_CONFIG);
+        });
+
+        // =====================================================
+        // 3️⃣ INIT BOT
+        // =====================================================
+        function initMiniBot(config) {
+            const root = document.getElementById('sam-minibot-root');
+            root.innerHTML = '';
+
+            // Header
+            const header = document.createElement('div');
+            header.style.display = 'flex';
+            header.style.alignItems = 'center';
+            header.style.justifyContent = 'space-between';
+            header.style.padding = '12px 16px';
+            header.style.background = config.theme?.primaryColor || '#2563eb';
+            header.style.color = '#fff';
+            header.style.fontWeight = '600';
+            header.style.fontSize = '14px';
+
+            const title = document.createElement('div');
+            title.innerText = config.ui?.title || 'SAM MiniBot';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.innerText = '✕';
+            closeBtn.style.background = 'transparent';
+            closeBtn.style.border = 'none';
+            closeBtn.style.color = '#fff';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.onclick = () => {
+                window.parent.postMessage({ type: 'SAM_MINIBOT_CLOSE' }, '*');
+            };
+
+            header.appendChild(title);
+            header.appendChild(closeBtn);
+
+
+            // Messages
+            const messages = document.createElement('div');
+            messages.id = 'sam-messages';
+            messages.style.flex = '1';
+            messages.style.padding = '12px';
+            messages.style.overflowY = 'auto';
+
+            // Input
+            const inputWrapper = document.createElement('form');
+            inputWrapper.style.display = 'flex';
+            inputWrapper.style.borderTop = '1px solid #e5e7eb';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Escribe tu mensaje…';
+            input.style.flex = '1';
+            input.style.border = 'none';
+            input.style.padding = '12px';
+            input.style.outline = 'none';
+            input.style.borderRadius = '0';
+            input.style.fontSize = '14px';
+            
+            const button = document.createElement('button');
+            button.type = 'submit';
+            button.innerText = 'Enviar';
+            button.style.border = 'none';
+            button.style.padding = '0 16px';
+            button.style.cursor = 'pointer';
+            button.style.background = config.theme?.primaryColor || '#2563eb';
+            button.style.color = '#fff';
+            button.style.fontWeight = '600';
+
+            inputWrapper.appendChild(input);
+            inputWrapper.appendChild(button);
+
+            root.appendChild(header);
+            root.appendChild(messages);
+            root.appendChild(inputWrapper);
+
+            inputWrapper.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const text = input.value.trim();
+                if (!text) return;
+
+                addMessage('user', text);
+                showTyping();
+
+                const response = await sendMessage(config, text);
+
+                hideTyping();
+                addMessage('bot', response);
+            });
+
+            addMessage(
+                'bot',
+                config.ui?.welcomeMessage ||
+                'Hola 👋 Soy SAM, tu asistente virtual. ¿En qué puedo ayudarte hoy?'
+            );
+
+        }
+
+        // =====================================================
+        // 4️⃣ API CALL
+        // =====================================================
+        async function sendMessage(config, message) {
+            try {
+                const res = await fetch(`${config.apiBase}/chatbot`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        clientId: config.clientId,
+                        message,
+                        channel: 'web'
+                    })
+                });
+
+                const data = await res.json();
+                return data.response || 'Sin respuesta';
+            } catch (err) {
+                return 'Error al conectar con el bot';
+            }
+        }
+
+        // =====================================================
+        // 5️⃣ UI HELPERS
+        // =====================================================
+        function addMessage(role, text) {
+            const container = document.getElementById('sam-messages');
+            const msg = document.createElement('div');
+
+            msg.style.marginBottom = '10px';
+            msg.style.padding = '10px 14px';
+            msg.style.borderRadius = DESIGN_TOKENS.borderRadius;
+            msg.style.maxWidth = '78%';
+            msg.style.fontSize = DESIGN_TOKENS.fontSize;
+            msg.style.lineHeight = '1.4';
+
+            if (role === 'user') {
+                msg.style.marginLeft = 'auto';
+                msg.style.background = DESIGN_TOKENS.userBg;
+                msg.style.color = DESIGN_TOKENS.userText;
+                msg.style.boxShadow = DESIGN_TOKENS.shadow;
+            } else {
+                msg.style.background = DESIGN_TOKENS.botBg;
+                msg.style.color = DESIGN_TOKENS.botText;
+            }
+
+            msg.innerText = text;
+            container.appendChild(msg);
+            container.scrollTop = container.scrollHeight;
+            }
+
+        // =====================================================
+        // 6️⃣ TYPING INDICATOR
+        // =====================================================
+        let typingIndicator = null;
+
+        function showTyping() {
+            const container = document.getElementById('sam-messages');
+            typingIndicator = document.createElement('div');
+            typingIndicator.innerText = '✍️ SAM está escribiendo…';
+            typingIndicator.style.fontSize = '12px';
+            typingIndicator.style.color = '#64748b';
+            typingIndicator.style.marginBottom = '8px';
+            container.appendChild(typingIndicator);
+            container.scrollTop = container.scrollHeight;
+            }
+
+        // =====================================================
+        // 7️⃣ HIDE TYPING INDICATOR
+        // =====================================================
+        function hideTyping() {
+            if (typingIndicator) {
+                typingIndicator.remove();
+                typingIndicator = null;
+            }
+        }
+
+        // =====================================================
+        // 8️⃣ SHOW ERROR
+        // =====================================================
+        function showError(message) {
+            const root = document.getElementById('sam-minibot-root');
+            root.innerHTML = `<div class="loading">${message}</div>`;
+        }
+    </script>
+</body>
+
+</html>

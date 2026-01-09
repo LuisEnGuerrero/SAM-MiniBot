@@ -1,240 +1,358 @@
-# Arquitectura Completa del Proyecto: Mini Bot Conversacional
+# 🤖 SAM MiniBot — Plataforma Conversacional SaaS
 
-## Arquitectura General
+**SAM MiniBot** es una plataforma conversacional **SaaS, multi-cliente y API-first**, diseñada para integrarse fácilmente en **cualquier sitio web o aplicación** mediante un **widget embebible** o consumo directo vía **API REST**.
 
-El proyecto sigue una arquitectura serverless con los siguientes componentes:
+El sistema permite a cada cliente:
 
-1. **Frontend**: Aplicación de una sola página (SPA) construida con React y TypeScript
-2. **Backend**: Firebase Cloud Functions que actúan como servicio web tipo REST
-3. **Base de Datos**: Cloud Firestore para persistir preguntas y respuestas
-4. **Hosting**: Firebase Hosting para servir la aplicación estática
+* Tener su **propio bot aislado**
+* Configurar **FAQs**, **respuestas por defecto**
+* Integrar **LLMs (OpenAI, Gemini, DeepSeek)**
+* Cargar **contexto documental (PDF)**
+* Usar el bot **sin exponer la base de datos ni claves**
 
-## Estructura Completa del Proyecto
+---
 
-La estructura del proyecto `chatbot-prototype` está organizada de la siguiente manera:
+## 🧠 Principios de Diseño
 
-```batch
+* **Multi-tenant real** (aislamiento por `clientId`)
+* **Serverless** (Firebase Cloud Functions)
+* **API REST** desacoplada del frontend
+* **Widget embebible universal**
+* **Seguridad por diseño** (Firestore + Storage bloqueados)
+* **Escalable y extensible**
 
-chatbot-prototype/
-├── .firebaserc                    # Configuración del proyecto de Firebase
-├── .gitignore                     # Archivos a ignorar en Git
-├── firebase.json                  # Configuración de Firebase (hosting, funciones, rewrites)
-├── package.json                   # Dependencias y scripts del proyecto raíz
-├── README.md                      # Documentación del proyecto
-├── firestore-seed.json            # Datos iniciales para Firestore
-├── public/                        # Archivos estáticos del frontend
-│   ├── index.html                 # Plantilla HTML principal
-│   ├── favicon.ico                # Icono de la aplicación
-│   ├── manifest.json              # Manifiesto de la aplicación
-│   └── robots.txt                 # Instrucciones para motores de búsqueda
-├── src/                           # Código fuente del frontend
-│   ├── components/                # Componentes de React
-│   │   ├── landing/               # Componentes de la landing page
-│   │   │   ├── Features.tsx       # Sección de características
-│   │   │   ├── Footer.tsx         # Pie de página
-│   │   │   ├── Hero.tsx           # Sección principal
-│   │   │   ├── HowItWorks.tsx     # Sección de cómo funciona
-│   │   │   └── TechStack.tsx      # Sección de tecnología
-│   │   ├── ChatBot.tsx            # Componente principal del chatbot
-│   │   ├── ChatInput.tsx          # Componente de entrada de mensajes
-│   │   └── ChatMessage.tsx        # Componente de mensajes del chat
-│   ├── services/                  # Servicios de API
-│   │   └── chatService.ts         # Servicio para comunicarse con el backend
-│   ├── types/                     # Definiciones de tipos TypeScript
-│   │   └── index.ts               # Tipos compartidos
-│   ├── App.tsx                    # Componente principal de la aplicación
-│   ├── App.css                    # Estilos globales
-│   ├── index.css                  # Estilos base
-│   ├── index.tsx                  # Punto de entrada de la aplicación
-│   └── setupTests.ts              # Configuración de pruebas
-├── functions/                     # Código fuente del backend (Cloud Functions)
-│   ├── .env.local                 # Variables de entorno locales (no en Git)
-│   ├── node_modules/              # Dependencias del backend
-│   ├── package.json               # Dependencias del backend
-│   ├── tsconfig.json              # Configuración de TypeScript para el backend
-│   └── src/                       # Código fuente del backend
-│       ├── chatbot.ts             # Lógica del chatbot
-│       └── index.ts               # Punto de entrada de las Cloud Functions
-└── tailwind.config.js             # Configuración de Tailwind CSS
+---
+
+## 🏗️ Arquitectura General
+
+```
+Cliente Web / App / Widget
+        |
+        | HTTP (POST /chatbot)
+        v
+Firebase Cloud Functions (API REST)
+        |
+        | Admin SDK
+        v
+Cloud Firestore (datos por cliente)
+        |
+        └── Contexto PDF / Configuración LLM
 ```
 
-## Instrucciones de Configuración y Ejecución
+---
 
-### 1. Configuración Inicial
+## 📦 Estructura del Proyecto
 
-1. Crea un nuevo proyecto en la [Consola de Firebase](https://console.firebase.google.com/).
-2. Instala la CLI de Firebase: `npm install -g firebase-tools`
-3. Autentícate con Firebase: `firebase login`
-4. Crea la estructura de carpetas como se describe arriba.
-5. Inicializa el proyecto de Firebase: `firebase init`
-   - Selecciona tu proyecto existente
-   - Habilita Functions y Hosting
-   - Configura TypeScript para Functions
-   - Establece `public` como directorio público
-   - Configura como SPA (Single Page Application)
-
-### 2. Configuración del Backend
-
-1. Navega a la carpeta `functions`: `cd functions`
-2. Instala las dependencias: `npm install`
-3. Vuelve a la raíz del proyecto: `cd ..`
-
-### 3. Configuración del Frontend
-
-1. Instala las dependencias del frontend: `npm install`
-2. Actualiza el archivo `src/services/chatService.ts` con tu ID de proyecto de Firebase en la URL de desarrollo:
-
-   ```typescript
-   const CLOUD_FUNCTION_URL = isDevelopment 
-     ? 'http://localhost:5001/tu-proyecto-id/us-central1/chatbot' // Reemplaza 'tu-proyecto-id'
-     : '/chatbot';
-   ```
-
-### 4. Ejecución Local
-
-1. Inicia los emuladores de Firebase: `firebase emulators:start`
-2. En otra terminal, inicia el servidor de desarrollo de React: `npm start`
-3. Abre la interfaz de usuario del emulador (normalmente en `http://localhost:4000`)
-4. Navega a la sección de Firestore y usa la función "Importar" para cargar el archivo `firestore-seed.json`
-5. Abre tu navegador en `http://localhost:3000` para ver la aplicación
-
-### 5. Despliegue a Producción
-
-1. Construye la aplicación de React: `npm run build`
-2. Construye las Functions tras `cd functions` corre: `npm run build`
-3. Habilita temporalmente los comandos legacy en firebase desde la raíz del proyecto: `firebase experiments:enable legacyRuntimeConfigCommands` (Opción que será deprecada en 2026)
-4. Lanza el Script para cargar las variables de entorno alojadas en .env: `.\scripts\set-firebase-config.ps1` (ver env.txt de ejemplo)
-5. Despliega las Functions: `firebase deploy --only functions`
-6. 
-
-## Estructura Firestore
+```text
+sam-minibot/
+│
+|-- .firebaserc
+|-- .nvmrc
+|-- chat-test.json
+|-- env.txt
+|-- Estructura.md
+|-- firebase.json
+|-- firestore-debug.log
+|-- firestore-seed.json
+|-- firestore.indexes.json
+|-- firestore.rules
+|-- package.json
+|-- postcss.config.js
+|-- tailwind.config.js
+|-- test.json
++-- build
+|   |-- asset-manifest.json
+|   |-- favicon.ico
+|   |-- favicon512.ico
+|   |-- index.html
+|   |-- manifest.json
+|   |-- robots.txt
+|   +-- static
+|   |   +-- css
+|   |   |   |-- main.5b6a362d.css
+|   |   |   └-- main.5b6a362d.css.map
+|   |   └-- js
+|   |       |-- main.3fce5ed8.js
+|   |       |-- main.3fce5ed8.js.LICENSE.txt
+|   |       └-- main.3fce5ed8.js.map
++-- functions
+|   |-- package.json
+|   |-- tsconfig.json
+|   +-- lib
+|   |   |-- chatbot.js
+|   |   |-- chatbot.js.map
+|   |   |-- index.js
+|   |   |-- index.js.map
+|   |   |-- loadClientConfig.js
+|   |   |-- loadClientConfig.js.map
+|   |   |-- requestMiniBot.js
+|   |   |-- requestMiniBot.js.map
+|   |   +-- config
+|   |   |   |-- env.js
+|   |   |   └-- env.js.map
+|   |   +-- providers
+|   |   |   |-- deepseek.provider.js
+|   |   |   |-- deepseek.provider.js.map
+|   |   |   |-- gemini.provider.js
+|   |   |   |-- gemini.provider.js.map
+|   |   |   |-- llm.types.js
+|   |   |   |-- llm.types.js.map
+|   |   |   |-- openai.provider.js
+|   |   |   └-- openai.provider.js.map
+|   |   └-- services
+|   |       |-- context.service.js
+|   |       |-- context.service.js.map
+|   |       |-- faq.service.js
+|   |       |-- faq.service.js.map
+|   |       |-- llm.service.js
+|   |       └-- llm.service.js.map
+|   +-- src
+|   |   |-- chatbot.ts
+|   |   |-- index.ts
+|   |   |-- loadClientConfig.ts
+|   |   |-- requestMiniBot.ts
+|   |   +-- config
+|   |   |   └-- env.ts
+|   |   +-- providers
+|   |   |   |-- deepseek.provider.ts
+|   |   |   |-- gemini.provider.ts
+|   |   |   |-- llm.types.ts
+|   |   |   └-- openai.provider.ts
+|   |   └-- services
+|   |       |-- context.service.ts
+|   |       |-- faq.service.ts
+|   |       └-- llm.service.ts
++-- LoadData
+|   |-- data-loader.prod.ps1
+|   |-- load-client.js
+|   |-- sam-minibot.initial.clean.json
+|   └-- sam-minibot.initial.json
++-- public                     # Landing + widget hosteado
+|   |-- favicon.ico
+|   |-- favicon512.ico
+|   |-- index.html
+|   |-- manifest.json
+|   |-- robots.txt
+│   └── widget/                 # Widget embebible
+|       |-- index.html
+│       └── sam-minibot.js
++-- scripts
+|   |-- load-gpt-config.prod.ps1
+|   |-- load-gpt-config.ps1
+|   |-- load-initial-client.prod.ps1
+|   |-- load-initial-client.ps1
+|   └-- set-firebase-config.ps1
++-- src
+|   |-- App.css
+|   |-- App.tsx
+|   |-- firebase.ts
+|   |-- index.css
+|   |-- index.tsx
+|   |-- setupTests.ts
+|   +-- components
+|   |   |-- ChatBot.tsx
+|   |   |-- ChatInput.tsx
+|   |   |-- ChatMessage.tsx
+|   |   └-- landing
+|   |       |-- Features.tsx
+|   |       |-- Footer.tsx
+|   |       |-- Hero.tsx
+|   |       |-- HowItWorks.tsx
+|   |       |-- MinibotForm.tsx
+|   |       └-- TechStack.tsx
+|   +-- services
+|   |   └-- chatService.ts
+|   └-- types
+|       └-- index.ts
+└── README.md
+```
 
 ---
 
-### Para un producto SaaS sólido
+## 🔑 Modelo SaaS (Firestore)
 
-´´´bash
+```text
 clients (collection)
- └── {clientId} (document)
-     ├── name: string
-     ├── domain: string
-     ├── active: boolean
-     ├── createdAt: timestamp
-     ├── llm: {
-     │     enabled: boolean
-     │     provider: 'openai' | 'gemini' | 'deepseek'
-     │     model: string
-     │   }
+ └── {clientId}
+     ├── name
+     ├── domain
+     ├── active
+     ├── llm
+     │    ├── enabled
+     │    ├── provider
+     │    └── model
      │
-     ├── chatbot_config (subcollection)
-     │    └── default (document)
-     │         └── value: string
+     ├── chatbot_config
+     │    └── default
+     │         └── value
      │
-     ├── chatbot_responses (subcollection)   ← FAQs
+     ├── chatbot_responses   ← FAQs
      │    └── {faqId}
-     │         ├── question: string
-     │         ├── answer: string
-     │         ├── active: boolean
-     │         └── order: number
      │
-     ├── context (subcollection)
-     │    └── pdf (document)
-     │         ├── enabled: boolean
-     │         ├── source: 'pdf' | 'text'
-     │         ├── content: string   ← texto plano extraído
-     │         └── updatedAt: timestamp
+     ├── context
+     │    └── pdf
      │
-     └── chat_conversations (subcollection)
-          └── {conversationId}
-               ├── sessionId: string
-               ├── userMessage: string
-               ├── botResponse: string
-               ├── source: 'faq' | 'default' | 'llm'
-               ├── confidence: number
-               └── timestamp: timestamp
+     └── chat_conversations
+```
 
-´´´
+✔ Cada cliente está **aislado**
+✔ No existe acceso directo desde frontend
+✔ Solo Cloud Functions interactúan con Firestore
 
 ---
 
-## SEGURIDAD
+## 🔐 Seguridad
 
-### REGLAS DE ACCESO FIRESTORE Y FIREBASE BUCKET
+### Firestore Rules (bloqueo total al frontend)
 
-Las siguientes reglas de seguridad de Firestore aseguran que ningún cliente pueda leer o escribir datos directamente en la base de datos. Tampoco el Frontend puede hacerlo solo las Firebase Functions con la dirección del Backend.
-
-```javascript
+```js
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // ===============================
-    // CLIENTES (núcleo SaaS)
-    // ===============================
-    match /clients/{clientId} {
-
-      // 🔴 El frontend NO puede leer ni escribir clientes
-      allow read, write: if false;
-
-      // -------------------------------
-      // Subcolecciones internas
-      // -------------------------------
-      match /{subcollection=**}/{docId} {
-        // 🔴 Todo acceso directo bloqueado
-        allow read, write: if false;
-      }
-    }
-
-    // -------------------------------
-    // Fallback: bloquear todo lo demás
-    // -------------------------------
     match /{document=**} {
       allow read, write: if false;
     }
   }
 }
-
 ```
 
-### Storage de almacenamiento para PDF de contexto para GPTs
+### Storage Rules (PDFs protegidos)
 
-Las siguientes reglas de seguridad de Firebase Storage aseguran que ningún cliente pueda leer o escribir archivos directamente en el bucket de almacenamiento. Solo las Firebase Functions pueden hacerlo.
-
-```javascript
+```js
 rules_version = '2';
-
 service firebase.storage {
   match /b/{bucket}/o {
-
-    // ===============================
-    // PDFs y assets por cliente
-    // ===============================
-    match /clients/{clientId}/{allPaths=**} {
-
-      // ❌ El frontend no puede leer ni escribir
-      allow read, write: if false;
-    }
-
-    // -------------------------------
-    // Bloquear todo lo demás
-    // -------------------------------
     match /{allPaths=**} {
       allow read, write: if false;
     }
   }
 }
-
 ```
 
-### Nota de seguridad
+👉 **El frontend nunca toca la base de datos**
 
-Este proyecto utiliza react-scripts@5.0.1 (Create React App).
-Algunas vulnerabilidades reportadas por npm audit provienen de dependencias internas de tooling (Babel, Webpack, ESLint, Workbox) que solo se ejecutan en tiempo de desarrollo o build, y no forman parte del bundle de producción.
+---
 
-Para este prototipo y prueba técnica se priorizó estabilidad y compatibilidad.
-En un roadmap de producción se contempla migrar el frontend a Vite o Next.js para eliminar estas dependencias heredadas.
+## 🔌 API REST — Chatbot
 
-## Licencia
+### Endpoint
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+```http
+POST /chatbot
+```
+
+### Body
+
+```json
+{
+  "clientId": "sam-minibot-prototipe",
+  "message": "Hola",
+  "sessionId": "abc123",
+  "channel": "web"
+}
+```
+
+### Response
+
+```json
+{
+  "response": "Hola, ¿en qué puedo ayudarte?",
+  "source": "faq | llm | default",
+  "confidence": 0.92,
+  "timestamp": "2026-01-09T11:46:44.471Z"
+}
+```
+
+✔ Funciona desde:
+
+* Widget embebido
+* Postman
+* curl
+* Apps móviles
+* Backends externos
+
+---
+
+## 🧩 Widget Embebible (Uso por Clientes)
+
+El cliente **solo debe copiar y pegar**:
+
+```html
+<script>
+  window.__SAM_MINIBOT_CONFIG__ = {
+    clientId: "sam-minibot-prototipe",
+    apiBase: "https://mini-bot-7a21d.web.app",
+    theme: {
+      primaryColor: "#2563eb"
+    },
+    ui: {
+      title: "Asistente SAM",
+      welcomeMessage: "Hola 👋 ¿En qué puedo ayudarte?"
+    }
+  };
+</script>
+
+<script src="https://mini-bot-7a21d.web.app/widget/sam-minibot.js" async></script>
+```
+
+✔ No instala dependencias
+✔ No expone claves
+✔ No accede a Firestore
+✔ 100% aislado por `clientId`
+
+---
+
+## ⚙️ Carga de Nuevos Clientes (Onboarding)
+
+### Script automático
+
+```bash
+node LoadData/load-client.js
+```
+
+Este script:
+
+* Lee un JSON de configuración
+* Inserta cliente, FAQs, config, LLM y contexto
+* Es **idempotente**
+* No requiere exponer secretos al frontend
+
+---
+
+## 🚀 Deploy
+
+```bash
+npm run build
+cd functions
+npm run build
+firebase deploy --only functions,hosting
+```
+
+---
+
+## 📌 Estado del Proyecto
+
+✔ API REST funcional
+✔ Widget embebible operativo
+✔ Multi-cliente validado
+✔ Seguridad aplicada
+✔ Listo para producción y escalado
+
+---
+
+## 🧭 Roadmap (opcional)
+
+* Dashboard de clientes
+* Gestión visual de FAQs
+* Autenticación por dominio
+* Analytics por cliente
+* Webhooks
+* Versionado de bots
+
+---
+
+## 📄 Licencia
+
+MIT License — uso libre con atribución.
+
+---
