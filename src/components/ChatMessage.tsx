@@ -40,7 +40,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
 const formatTime = (date: Date): string => {
   return new Date(date).toLocaleTimeString('es-ES', {
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
+    second: '2-digit'
   });
 };
 

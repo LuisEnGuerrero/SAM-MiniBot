@@ -1,5 +1,5 @@
 // functions/src/chatbot.ts
-// VERSION: 4.0.3 — Production Safe
+// VERSION: 4.0.5 — Production Safe
 
 import * as admin from 'firebase-admin';
 import { Request, Response } from 'express';
@@ -163,7 +163,7 @@ export async function chatbotHandler(
     // --------------------
     // 3️⃣ Default
     // --------------------
-    if (source === 'default') {
+    if (confidence === 0) {
       const defaultConfig = await clientRef
         .collection('chatbot_config')
         .doc('default')
@@ -194,7 +194,7 @@ export async function chatbotHandler(
     // --------------------
     let suggestedFaqs: string[] = [];
 
-    if (source === 'default') {
+    if (confidence === 0) {
       try {
         suggestedFaqs = await getFaqSuggestions(clientId, 5);
       } catch (err) {

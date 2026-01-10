@@ -1,3 +1,5 @@
+// src/components/ChatInput.tsx
+
 import React, { useState, FormEvent } from 'react';
 
 interface ChatInputProps {

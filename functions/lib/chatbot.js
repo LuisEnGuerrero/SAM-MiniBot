@@ -1,6 +1,6 @@
 "use strict";
 // functions/src/chatbot.ts
-// VERSION: 4.0.3 — Production Safe
+// VERSION: 4.0.5 — Production Safe
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -156,7 +156,7 @@ async function chatbotHandler(request, response) {
         // --------------------
         // 3️⃣ Default
         // --------------------
-        if (source === 'default') {
+        if (confidence === 0) {
             const defaultConfig = await clientRef
                 .collection('chatbot_config')
                 .doc('default')
@@ -182,7 +182,7 @@ async function chatbotHandler(request, response) {
         // FAQ suggestions (SAFE)
         // --------------------
         let suggestedFaqs = [];
-        if (source === 'default') {
+        if (confidence === 0) {
             try {
                 suggestedFaqs = await (0, faqSuggestions_service_1.getFaqSuggestions)(clientId, 5);
             }

@@ -1,3 +1,5 @@
+// src/components/ChatBot.tsx
+
 import React, { useState, useEffect, useRef } from 'react';
 import ChatMessage from './ChatMessage.tsx';
 import ChatInput from './ChatInput.tsx';
@@ -71,13 +73,14 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, setIsChatOpen }) => {
 
       setMessages(prev => [...prev, botMsg]);
 
-      if (
-        response.source === 'default' &&
-        Array.isArray(response.suggestedFaqs) &&
-        response.suggestedFaqs.length > 0
-      ) {
-        setSuggestedFaqs(response.suggestedFaqs);
+      const faqs = Array.isArray(response.suggestedFaqs)
+        ? response.suggestedFaqs
+        : [];
+
+      if (faqs.length > 0) {
+        setSuggestedFaqs(faqs);
       }
+
     } catch (error) {
       console.error('[ChatBot] Error:', error);
 
