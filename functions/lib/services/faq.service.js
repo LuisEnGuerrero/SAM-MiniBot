@@ -1,4 +1,5 @@
 "use strict";
+// functions/src/services/faq.services.ts
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -33,15 +34,20 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDB = getDB;
 exports.resolveFAQ = resolveFAQ;
 const admin = __importStar(require("firebase-admin"));
+// ------------------------------------
+// DB helper (local, seguro)
+// ------------------------------------
 function getDB() {
     return admin.firestore();
 }
-;
+// ------------------------------------
+// FAQ Resolver
+// ------------------------------------
 /**
- * Busca una respuesta FAQ por similitud
+ * Busca la mejor coincidencia FAQ por similitud textual.
+ * Devuelve null si no hay coincidencias significativas.
  */
 async function resolveFAQ(clientId, message) {
     const db = getDB();
@@ -55,35 +61,46 @@ async function resolveFAQ(clientId, message) {
         return null;
     const normalizedMessage = normalize(message);
     let bestMatch = null;
-    snapshot.forEach(doc => {
+    // ✅ for...of evita el bug de "never" y permite break real
+    for (const doc of snapshot.docs) {
         const data = doc.data();
         if (!data.question || !data.answer)
-            return;
+            continue;
         const similarity = similarityScore(normalizedMessage, normalize(data.question));
         if (!bestMatch || similarity > bestMatch.confidence) {
             bestMatch = {
                 answer: data.answer,
                 confidence: similarity
             };
+            // Coincidencia perfecta → cortamos
+            if (similarity === 1)
+                break;
         }
-    });
+    }
+    // 🔒 Umbral mínimo de calidad (defensa adicional)
+    if (bestMatch === null || bestMatch.confidence < 0.3) {
+        return null;
+    }
     return bestMatch;
 }
-/* ---------------- utils ---------------- */
+// ------------------------------------
+// Utils
+// ------------------------------------
 function normalize(text) {
     return text.toLowerCase().trim().replace(/[^\w\s]/gi, '');
 }
 function similarityScore(a, b) {
-    const longer = a.length > b.length ? a : b;
-    const shorter = a.length > b.length ? b : a;
+    const longer = a.length >= b.length ? a : b;
+    const shorter = a.length >= b.length ? b : a;
     if (longer.length === 0)
         return 1;
     return (longer.length - levenshtein(longer, shorter)) / longer.length;
 }
 function levenshtein(a, b) {
     const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]);
-    for (let j = 0; j <= a.length; j++)
+    for (let j = 0; j <= a.length; j++) {
         matrix[0][j] = j;
+    }
     for (let i = 1; i <= b.length; i++) {
         for (let j = 1; j <= a.length; j++) {
             matrix[i][j] =

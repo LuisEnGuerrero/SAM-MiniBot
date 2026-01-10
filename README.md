@@ -373,6 +373,9 @@ service firebase.storage {
 
 👉 **El frontend nunca toca la base de datos**
 
+El control de dominio se diseñó como un Domain Guard SaaS.
+La plataforma base está explícitamente permitida para onboarding, demos y widget loader, mientras que los dominios finales se validan por cliente.
+
 ---
 
 ## 🔌 API REST — Chatbot

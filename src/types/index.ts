@@ -1,8 +1,9 @@
 // src/types/index.ts
 
-// ----------------------------
+// =====================================================
 // UI types
-// ----------------------------
+// =====================================================
+
 export interface ChatMessage {
   id: string;
   text: string;
@@ -10,42 +11,53 @@ export interface ChatMessage {
   timestamp: Date;
   meta?: {
     confidence?: number;
-    matched?: boolean;
-    source?: 'faq' | 'llm' | 'system';
+    source?: ResponseSource;
   };
 }
 
-// ----------------------------
+// =====================================================
 // API contract
-// ----------------------------
+// =====================================================
+
 export interface ChatRequest {
   clientId: string;
   message: string;
   sessionId?: string;
-  // Futuro: metadata del canal / widget
   channel?: 'web' | 'widget' | 'api';
   locale?: string; // 'es', 'en', etc.
 }
 
+/**
+ * 🔹 Fuente real de la respuesta
+ * - faq      → coincidencia directa
+ * - llm      → respuesta generada
+ * - default  → fallback configurado por el cliente
+ */
+export type ResponseSource = 'faq' | 'llm' | 'default';
+
 export interface ChatResponse {
   response: string;
   sessionId: string;
-  confidence: number;
-  matched: boolean;
 
-  // nuestro backend devuelve ISO string (estable)
+  confidence: number;
+  source: ResponseSource;
+
+  // backend devuelve ISO string (estable)
   timestamp: string;
 
-  // Futuro: trazabilidad del motor
-  source?: 'faq' | 'llm';
-  model?: string; // ej: 'gpt-4o-mini' / 'gemini-1.5-flash'
+  // FAQs sugeridas cuando source === 'default'
+  suggestedFaqs?: string[];
+
+  // opcional: trazabilidad futura del motor
+  model?: string; // ej: 'gpt-4o-mini', 'gemini-1.5-flash'
 }
 
-// ----------------------------
+// =====================================================
 // SaaS runtime config (frontend)
-// ----------------------------
+// =====================================================
+
 export interface MiniBotRuntimeConfig {
   clientId: string;
-  apiBase?: string; // ej: https://tudominio.com (si no es mismo origen)
+  apiBase?: string; // ej: https://tudominio.com
   mode?: 'faq' | 'hybrid' | 'llm';
 }

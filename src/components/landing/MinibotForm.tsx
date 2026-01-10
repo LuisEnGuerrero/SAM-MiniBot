@@ -1,3 +1,5 @@
+// src/components/landing/MinibotForm.tsx 
+
 import React, { useState } from 'react';
 
 interface FAQ {
@@ -102,13 +104,17 @@ const MinibotForm: React.FC = () => {
     };
 
     try {
-      await fetch('/requestMiniBot', {
+      const res = await fetch('/requestMiniBot', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
       });
+
+      if (!res.ok) {
+        throw new Error('Error en el envío');
+      }
 
       setSubmitted(true);
     } catch (error) {
@@ -237,7 +243,14 @@ const MinibotForm: React.FC = () => {
                   className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
                   placeholder="mi-sitio-bot"
                   value={clientId} 
-                  onChange={e => setClientId(e.target.value)}
+                  onChange={e =>
+                    setClientId(
+                      e.target.value
+                        .toLowerCase()
+                        .replace(/\s+/g, '-')
+                        .replace(/[^a-z0-9-]/g, '')
+                    )
+                  }
                   required
                 />
                 <p className="text-xs text-gray-500 mt-1">Identificador único para tu bot</p>
@@ -294,7 +307,7 @@ const MinibotForm: React.FC = () => {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
                 </svg>
-                Agrega la posible pregunta que podría hacer tu cliente
+                Agregar otra pregunta
               </button>
             </div>
             
@@ -307,7 +320,7 @@ const MinibotForm: React.FC = () => {
                     </label>
                     <input 
                       className="border border-gray-300 p-3 rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                      placeholder="¿Cuál es el horario de atención?"
+                      placeholder="Agrega la posible pregunta que podría hacer tu cliente ej: ¿Cuál es el horario de atención?"
                       value={faq.question}
                       onChange={e => updateFAQ(index, 'question', e.target.value)}
                     />

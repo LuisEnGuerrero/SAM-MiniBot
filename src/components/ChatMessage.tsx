@@ -1,3 +1,5 @@
+// src/components/ChatMessage.tsx
+
 import React from 'react';
 import { ChatMessage as ChatMessageType } from '../types';
 

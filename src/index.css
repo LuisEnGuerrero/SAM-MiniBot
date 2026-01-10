@@ -17,6 +17,24 @@ code {
     monospace;
 }
 
+.faq-suggestions {
+  margin-top: 8px;
+  padding: 10px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.faq-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  display: block;
+  margin-bottom: 4px;
+  text-align: left;
+}
+
 /* Animación para el indicador de escritura */
 @keyframes typing {
   0% { content: '.'; }

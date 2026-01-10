@@ -1,5 +1,5 @@
 // functions/src/chatbot.ts
-// VERSION: 4.0.0 — SaaS + Domain Guard + FAQ + PDF + Multi-LLM
+// VERSION: 4.0.3 — Production Safe
 
 import * as admin from 'firebase-admin';
 import { Request, Response } from 'express';
@@ -7,11 +7,12 @@ import { Request, Response } from 'express';
 import { resolveFAQ } from './services/faq.service';
 import { getClientContext } from './services/context.service';
 import { generateLLMResponse } from './services/llm.service';
+import { getFaqSuggestions } from './services/faqSuggestions.service';
 
 // --------------------
-// Init Firebase Admin
+// Firebase DB helper
 // --------------------
-export function getDB() {
+function getDB() {
   return admin.firestore();
 }
 
@@ -27,22 +28,30 @@ interface ChatRequest {
 type ResponseSource = 'faq' | 'default' | 'llm';
 
 // --------------------
-// Helper: domain check
+// Helper: domain check (SAFE)
 // --------------------
+function normalizeDomain(value: unknown): string[] {
+  if (!value) return [];
+  if (Array.isArray(value)) {
+    return value.map(v => String(v).replace(/^https?:\/\//, ''));
+  }
+  return [String(value).replace(/^https?:\/\//, '')];
+}
+
 function isDomainAllowed(
   origin: string | undefined,
-  allowed: string | string[] | undefined
+  allowed: unknown
 ): boolean {
-  // Allow non-browser tools (Postman, curl, backend)
+  // Allow Postman / curl
   if (!origin) return true;
 
-  if (!allowed) return false;
+  const cleanOrigin = origin.replace(/^https?:\/\//, '');
+  const domains = normalizeDomain(allowed);
 
-  const domains = Array.isArray(allowed) ? allowed : [allowed];
+  // No restriction configured → allow
+  if (domains.length === 0) return true;
 
-  return domains.some(domain =>
-    origin.includes(domain)
-  );
+  return domains.some(domain => cleanOrigin.includes(domain));
 }
 
 // --------------------
@@ -53,21 +62,13 @@ export async function chatbotHandler(
   response: Response
 ) {
   try {
-    const {
-      clientId,
-      message,
-      sessionId = 'default'
-    } = request.body as ChatRequest;
+    const { clientId, message, sessionId = 'default' } =
+      request.body as ChatRequest;
 
-    // --------------------
-    // Validations
-    // --------------------
-    if (!clientId) {
-      return response.status(400).json({ error: 'clientId es requerido' });
-    }
-
-    if (!message) {
-      return response.status(400).json({ error: 'El mensaje es requerido' });
+    if (!clientId || !message) {
+      return response.status(400).json({
+        error: 'clientId y message son requeridos'
+      });
     }
 
     const db = getDB();
@@ -80,10 +81,10 @@ export async function chatbotHandler(
       });
     }
 
-    const clientData = clientSnap.data()!;
+    const clientData = clientSnap.data() ?? {};
 
     // --------------------
-    // 🔒 Active check
+    // Active check
     // --------------------
     if (clientData.active === false) {
       return response.status(403).json({
@@ -92,60 +93,77 @@ export async function chatbotHandler(
     }
 
     // --------------------
-    // 🔒 Domain validation
+    // Domain guard
     // --------------------
-    const origin = request.headers.origin;
+    const origin = request.headers.origin as string | undefined;
+    const SAAS_DOMAIN = 'mini-bot-7a21d.web.app';
+    const cleanOrigin = origin?.replace(/^https?:\/\//, '');
 
-    const domainAllowed = isDomainAllowed(
-      origin,
-      clientData.domain
-    );
-
-    if (!domainAllowed) {
+    // 1️⃣ Permitir siempre llamadas desde el SaaS
+    if (cleanOrigin?.includes(SAAS_DOMAIN)) {
+      // allow
+    }
+    // 2️⃣ Validar dominios externos del cliente
+    else if (!isDomainAllowed(origin, clientData.domain)) {
       return response.status(403).json({
         error: 'Dominio no autorizado'
       });
     }
 
-    let responseText: string;
-    let source: ResponseSource;
+
+    let responseText = '';
+    let source: ResponseSource = 'default';
     let confidence = 0;
 
     // --------------------
     // 1️⃣ FAQ
     // --------------------
-    const faqResult = await resolveFAQ(clientId, message);
+    try {
+      const faqResult = await resolveFAQ(clientId, message);
 
-    if (faqResult && faqResult.confidence >= 0.6) {
-      responseText = faqResult.answer;
-      confidence = faqResult.confidence;
-      source = 'faq';
+      if (faqResult && faqResult.confidence >= 0.6) {
+        responseText = faqResult.answer;
+        confidence = faqResult.confidence;
+        source = 'faq';
+      }
+    } catch (err) {
+      console.warn('[FAQ] skipped:', err);
     }
 
     // --------------------
     // 2️⃣ LLM
     // --------------------
-    else if (clientData.llm?.enabled && clientData.llm.provider) {
-      const context = await getClientContext(clientId);
+    if (
+      source === 'default' &&
+      clientData.llm?.enabled &&
+      clientData.llm?.provider
+    ) {
+      try {
+        const context = await getClientContext(clientId);
 
-      const llmAnswer = await generateLLMResponse(
-        clientData.llm.provider,
-        {
-          message,
-          context: context ?? undefined,
-          systemPrompt: clientData.llm.systemPrompt
+        const llmAnswer = await generateLLMResponse(
+          clientData.llm.provider,
+          {
+            message,
+            context: context ?? undefined,
+            systemPrompt: clientData.llm.systemPrompt
+          }
+        );
+
+        if (llmAnswer?.trim()) {
+          responseText = llmAnswer;
+          source = 'llm';
+          confidence = 1;
         }
-      );
-
-      responseText = llmAnswer;
-      source = 'llm';
-      confidence = 1;
+      } catch (err) {
+        console.warn('[LLM] fallback:', err);
+      }
     }
 
     // --------------------
     // 3️⃣ Default
     // --------------------
-    else {
+    if (source === 'default') {
       const defaultConfig = await clientRef
         .collection('chatbot_config')
         .doc('default')
@@ -155,9 +173,6 @@ export async function chatbotHandler(
         defaultConfig.exists && defaultConfig.data()?.value
           ? defaultConfig.data()!.value
           : 'Lo siento, no he entendido tu pregunta. ¿Podrías reformularla?';
-
-      source = 'default';
-      confidence = 0;
     }
 
     // --------------------
@@ -175,6 +190,19 @@ export async function chatbotHandler(
     });
 
     // --------------------
+    // FAQ suggestions (SAFE)
+    // --------------------
+    let suggestedFaqs: string[] = [];
+
+    if (source === 'default') {
+      try {
+        suggestedFaqs = await getFaqSuggestions(clientId, 5);
+      } catch (err) {
+        console.warn('[FAQ Suggestions] skipped:', err);
+      }
+    }
+
+    // --------------------
     // Response
     // --------------------
     return response.status(200).json({
@@ -182,11 +210,12 @@ export async function chatbotHandler(
       sessionId,
       source,
       confidence,
+      suggestedFaqs,
       timestamp: now.toISOString()
     });
 
   } catch (error) {
-    console.error('[chatbot] Error:', error);
+    console.error('[chatbot] FATAL ERROR:', error);
 
     return response.status(500).json({
       error:

@@ -1,5 +1,6 @@
 "use strict";
 // functions/src/requestMiniBot.ts
+// VERSION: 1.1.0 — MiniBot Request Handler (Aligned + Safe)
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -35,16 +36,17 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.requestMiniBot = void 0;
-exports.getDB = getDB;
 const functions = __importStar(require("firebase-functions"));
 const admin = __importStar(require("firebase-admin"));
 const nodemailer = __importStar(require("nodemailer"));
+// ------------------------------------
+// Firestore helper
+// ------------------------------------
 function getDB() {
     return admin.firestore();
 }
-;
 // ------------------------------------
-// Transporter (correo)
+// Mail transporter
 // ------------------------------------
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -62,37 +64,72 @@ exports.requestMiniBot = functions.https.onRequest(async (req, res) => {
             res.status(405).json({ error: 'Método no permitido' });
             return;
         }
-        const { contact, config } = req.body;
+        const { contact, config } = req.body || {};
         const db = getDB();
-        if (!contact?.email || !contact?.siteName) {
+        // ------------------------------
+        // Validaciones críticas
+        // ------------------------------
+        if (!contact?.name || !contact?.email) {
             res.status(400).json({
-                error: 'Datos de contacto incompletos'
+                error: 'Información de contacto incompleta'
             });
             return;
         }
+        if (!config?.client?.clientId) {
+            res.status(400).json({
+                error: 'clientId es requerido'
+            });
+            return;
+        }
+        const clientId = config.client.clientId;
         // ------------------------------
-        // Guardar solicitud en Firestore
+        // Guardar solicitud (auditoría)
         // ------------------------------
         await db.collection('minibot_requests').add({
             contact,
             config,
+            clientId,
             status: 'pending',
-            createdAt: new Date()
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
         });
         // ------------------------------
         // Enviar correo
         // ------------------------------
         await transporter.sendMail({
             from: `"SAM MiniBot" <${process.env.MAIL_USER}>`,
-            to: 'luisenguerrero.cm@gmail.com',
-            subject: `Solicito un MiniBot para mi Sitio Web ${contact.siteName}`,
-            html: `
-          <h2>📩 Nueva solicitud de MiniBot</h2>
-          <p><strong>Sitio:</strong> ${contact.siteName}</p>
-          <p><strong>Contacto:</strong> ${contact.name} (${contact.email})</p>
-          <p><strong>Mensaje:</strong> ${contact.message ?? '—'}</p>
-          <pre>${JSON.stringify(config, null, 2)}</pre>
-        `
+            to: process.env.MAIL_TO || process.env.MAIL_USER,
+            subject: `🆕 Nueva solicitud MiniBot – ${clientId}`,
+            text: `
+Nueva solicitud de MiniBot
+
+CONTACTO
+--------
+Nombre: ${contact.name}
+Correo: ${contact.email}
+Empresa: ${contact.company || 'N/A'}
+Sitio Web: ${contact.website || 'N/A'}
+
+MENSAJE
+-------
+${contact.message || 'Sin mensaje adicional'}
+
+CONFIGURACIÓN
+-------------
+ClientId: ${clientId}
+Nombre del Bot: ${config.client.name || 'N/A'}
+LLM activado: ${config.client.llm?.enabled ? 'Sí' : 'No'}
+
+FAQs registradas: ${config.chatbot_responses?.length || 0}
+
+Se adjunta la configuración completa en formato JSON.
+        `,
+            attachments: [
+                {
+                    filename: `${clientId}.json`,
+                    content: JSON.stringify(config, null, 2),
+                    contentType: 'application/json'
+                }
+            ]
         });
         // ------------------------------
         // Respuesta OK

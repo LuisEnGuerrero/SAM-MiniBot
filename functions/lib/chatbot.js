@@ -1,6 +1,6 @@
 "use strict";
 // functions/src/chatbot.ts
-// VERSION: 4.0.0 — SaaS + Domain Guard + FAQ + PDF + Multi-LLM
+// VERSION: 4.0.3 — Production Safe
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -35,29 +35,39 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDB = getDB;
 exports.chatbotHandler = chatbotHandler;
 const admin = __importStar(require("firebase-admin"));
 const faq_service_1 = require("./services/faq.service");
 const context_service_1 = require("./services/context.service");
 const llm_service_1 = require("./services/llm.service");
+const faqSuggestions_service_1 = require("./services/faqSuggestions.service");
 // --------------------
-// Init Firebase Admin
+// Firebase DB helper
 // --------------------
 function getDB() {
     return admin.firestore();
 }
 // --------------------
-// Helper: domain check
+// Helper: domain check (SAFE)
 // --------------------
+function normalizeDomain(value) {
+    if (!value)
+        return [];
+    if (Array.isArray(value)) {
+        return value.map(v => String(v).replace(/^https?:\/\//, ''));
+    }
+    return [String(value).replace(/^https?:\/\//, '')];
+}
 function isDomainAllowed(origin, allowed) {
-    // Allow non-browser tools (Postman, curl, backend)
+    // Allow Postman / curl
     if (!origin)
         return true;
-    if (!allowed)
-        return false;
-    const domains = Array.isArray(allowed) ? allowed : [allowed];
-    return domains.some(domain => origin.includes(domain));
+    const cleanOrigin = origin.replace(/^https?:\/\//, '');
+    const domains = normalizeDomain(allowed);
+    // No restriction configured → allow
+    if (domains.length === 0)
+        return true;
+    return domains.some(domain => cleanOrigin.includes(domain));
 }
 // --------------------
 // Handler
@@ -65,14 +75,10 @@ function isDomainAllowed(origin, allowed) {
 async function chatbotHandler(request, response) {
     try {
         const { clientId, message, sessionId = 'default' } = request.body;
-        // --------------------
-        // Validations
-        // --------------------
-        if (!clientId) {
-            return response.status(400).json({ error: 'clientId es requerido' });
-        }
-        if (!message) {
-            return response.status(400).json({ error: 'El mensaje es requerido' });
+        if (!clientId || !message) {
+            return response.status(400).json({
+                error: 'clientId y message son requeridos'
+            });
         }
         const db = getDB();
         const clientRef = db.collection('clients').doc(clientId);
@@ -82,9 +88,9 @@ async function chatbotHandler(request, response) {
                 error: 'Cliente no encontrado'
             });
         }
-        const clientData = clientSnap.data();
+        const clientData = clientSnap.data() ?? {};
         // --------------------
-        // 🔒 Active check
+        // Active check
         // --------------------
         if (clientData.active === false) {
             return response.status(403).json({
@@ -92,45 +98,65 @@ async function chatbotHandler(request, response) {
             });
         }
         // --------------------
-        // 🔒 Domain validation
+        // Domain guard
         // --------------------
         const origin = request.headers.origin;
-        const domainAllowed = isDomainAllowed(origin, clientData.domain);
-        if (!domainAllowed) {
+        const SAAS_DOMAIN = 'mini-bot-7a21d.web.app';
+        const cleanOrigin = origin?.replace(/^https?:\/\//, '');
+        // 1️⃣ Permitir siempre llamadas desde el SaaS
+        if (cleanOrigin?.includes(SAAS_DOMAIN)) {
+            // allow
+        }
+        // 2️⃣ Validar dominios externos del cliente
+        else if (!isDomainAllowed(origin, clientData.domain)) {
             return response.status(403).json({
                 error: 'Dominio no autorizado'
             });
         }
-        let responseText;
-        let source;
+        let responseText = '';
+        let source = 'default';
         let confidence = 0;
         // --------------------
         // 1️⃣ FAQ
         // --------------------
-        const faqResult = await (0, faq_service_1.resolveFAQ)(clientId, message);
-        if (faqResult && faqResult.confidence >= 0.6) {
-            responseText = faqResult.answer;
-            confidence = faqResult.confidence;
-            source = 'faq';
+        try {
+            const faqResult = await (0, faq_service_1.resolveFAQ)(clientId, message);
+            if (faqResult && faqResult.confidence >= 0.6) {
+                responseText = faqResult.answer;
+                confidence = faqResult.confidence;
+                source = 'faq';
+            }
+        }
+        catch (err) {
+            console.warn('[FAQ] skipped:', err);
         }
         // --------------------
         // 2️⃣ LLM
         // --------------------
-        else if (clientData.llm?.enabled && clientData.llm.provider) {
-            const context = await (0, context_service_1.getClientContext)(clientId);
-            const llmAnswer = await (0, llm_service_1.generateLLMResponse)(clientData.llm.provider, {
-                message,
-                context: context ?? undefined,
-                systemPrompt: clientData.llm.systemPrompt
-            });
-            responseText = llmAnswer;
-            source = 'llm';
-            confidence = 1;
+        if (source === 'default' &&
+            clientData.llm?.enabled &&
+            clientData.llm?.provider) {
+            try {
+                const context = await (0, context_service_1.getClientContext)(clientId);
+                const llmAnswer = await (0, llm_service_1.generateLLMResponse)(clientData.llm.provider, {
+                    message,
+                    context: context ?? undefined,
+                    systemPrompt: clientData.llm.systemPrompt
+                });
+                if (llmAnswer?.trim()) {
+                    responseText = llmAnswer;
+                    source = 'llm';
+                    confidence = 1;
+                }
+            }
+            catch (err) {
+                console.warn('[LLM] fallback:', err);
+            }
         }
         // --------------------
         // 3️⃣ Default
         // --------------------
-        else {
+        if (source === 'default') {
             const defaultConfig = await clientRef
                 .collection('chatbot_config')
                 .doc('default')
@@ -139,8 +165,6 @@ async function chatbotHandler(request, response) {
                 defaultConfig.exists && defaultConfig.data()?.value
                     ? defaultConfig.data().value
                     : 'Lo siento, no he entendido tu pregunta. ¿Podrías reformularla?';
-            source = 'default';
-            confidence = 0;
         }
         // --------------------
         // Persist conversation
@@ -155,6 +179,18 @@ async function chatbotHandler(request, response) {
             timestamp: now
         });
         // --------------------
+        // FAQ suggestions (SAFE)
+        // --------------------
+        let suggestedFaqs = [];
+        if (source === 'default') {
+            try {
+                suggestedFaqs = await (0, faqSuggestions_service_1.getFaqSuggestions)(clientId, 5);
+            }
+            catch (err) {
+                console.warn('[FAQ Suggestions] skipped:', err);
+            }
+        }
+        // --------------------
         // Response
         // --------------------
         return response.status(200).json({
@@ -162,11 +198,12 @@ async function chatbotHandler(request, response) {
             sessionId,
             source,
             confidence,
+            suggestedFaqs,
             timestamp: now.toISOString()
         });
     }
     catch (error) {
-        console.error('[chatbot] Error:', error);
+        console.error('[chatbot] FATAL ERROR:', error);
         return response.status(500).json({
             error: 'Lo siento, ha ocurrido un error al procesar tu mensaje. Por favor, inténtalo de nuevo más tarde.'
         });
