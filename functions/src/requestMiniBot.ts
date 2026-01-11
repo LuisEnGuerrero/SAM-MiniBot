@@ -1,10 +1,10 @@
 // functions/src/requestMiniBot.ts
-// VERSION: 1.1.0 — MiniBot Request Handler (Aligned + Safe)
+// VERSION: 1.3.0 — MiniBot Request Handler (SMTP Gmail + Audit + Safe)
 
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import * as nodemailer from 'nodemailer';
 import { Request, Response } from 'express';
+import * as nodemailer from 'nodemailer';
 
 // ------------------------------------
 // Firestore helper
@@ -14,116 +14,156 @@ function getDB() {
 }
 
 // ------------------------------------
-// Mail transporter
+// Mail config (Firebase Runtime Config)
 // ------------------------------------
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS
-  }
-});
+function getMailUser(): string | undefined {
+  return functions.config()?.mail?.user;
+}
+
+function getMailPass(): string | undefined {
+  return functions.config()?.mail?.pass;
+}
 
 // ------------------------------------
 // Function
 // ------------------------------------
 export const requestMiniBot = functions.https.onRequest(
   async (req: Request, res: Response): Promise<void> => {
-    try {
-      if (req.method !== 'POST') {
-        res.status(405).json({ error: 'Método no permitido' });
-        return;
-      }
+    // CORS básico
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
 
+    if (req.method === 'OPTIONS') {
+      res.status(204).send('');
+      return;
+    }
+
+    if (req.method !== 'POST') {
+      res.status(405).json({ error: 'Método no permitido' });
+      return;
+    }
+
+    const db = getDB();
+    const now = admin.firestore.FieldValue.serverTimestamp();
+
+    try {
       const { contact, config } = req.body || {};
-      const db = getDB();
 
       // ------------------------------
-      // Validaciones críticas
+      // Validaciones
       // ------------------------------
       if (!contact?.name || !contact?.email) {
-        res.status(400).json({
-          error: 'Información de contacto incompleta'
-        });
+        res.status(400).json({ error: 'Información de contacto incompleta' });
         return;
       }
 
       if (!config?.client?.clientId) {
-        res.status(400).json({
-          error: 'clientId es requerido'
-        });
+        res.status(400).json({ error: 'clientId es requerido' });
         return;
       }
 
-      const clientId = config.client.clientId;
+      const clientId: string = String(config.client.clientId);
 
       // ------------------------------
-      // Guardar solicitud (auditoría)
+      // Auditoría en Firestore
       // ------------------------------
-      await db.collection('minibot_requests').add({
+      const reqRef = await db.collection('minibot_requests').add({
         contact,
         config,
         clientId,
         status: 'pending',
-        createdAt: admin.firestore.FieldValue.serverTimestamp()
+        createdAt: now,
+        updatedAt: now
       });
+
+      // ------------------------------
+      // Config SMTP
+      // ------------------------------
+      const mailUser = getMailUser();
+      const mailPass = getMailPass();
+
+      if (!mailUser || !mailPass) {
+        await reqRef.update({
+          status: 'email_failed',
+          error: 'Missing SMTP credentials',
+          updatedAt: now
+        });
+
+        res.status(500).json({
+          error: 'Falta configuración de correo SMTP'
+        });
+        return;
+      }
+
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: mailUser,
+          pass: mailPass
+        }
+      });
+
+      // ------------------------------
+      // Construir correo
+      // ------------------------------
+      const subject = `🆕 Nueva solicitud MiniBot – ${clientId}`;
+
+      const html = `
+        <h3>Nueva solicitud MiniBot</h3>
+        <p><strong>Nombre:</strong> ${contact.name}</p>
+        <p><strong>Email:</strong> ${contact.email}</p>
+        <p><strong>Empresa:</strong> ${contact.company || 'N/A'}</p>
+        <p><strong>Sitio Web:</strong> ${contact.website || 'N/A'}</p>
+
+        <h4>Mensaje</h4>
+        <p>${contact.message || 'Sin mensaje adicional'}</p>
+
+        <hr />
+
+        <p><strong>ClientId:</strong> ${clientId}</p>
+        <p><strong>Bot:</strong> ${config.client.name || 'N/A'}</p>
+        <p><strong>LLM activo:</strong> ${config.client.llm?.enabled ? 'Sí' : 'No'}</p>
+        <p><strong>FAQs registradas:</strong> ${config.chatbot_responses?.length || 0}</p>
+      `;
+
+      const jsonAttachment = Buffer.from(
+        JSON.stringify(config, null, 2)
+      );
 
       // ------------------------------
       // Enviar correo
       // ------------------------------
       await transporter.sendMail({
-        from: `"SAM MiniBot" <${process.env.MAIL_USER}>`,
-        to: process.env.MAIL_TO || process.env.MAIL_USER,
-        subject: `🆕 Nueva solicitud MiniBot – ${clientId}`,
-        text: `
-Nueva solicitud de MiniBot
-
-CONTACTO
---------
-Nombre: ${contact.name}
-Correo: ${contact.email}
-Empresa: ${contact.company || 'N/A'}
-Sitio Web: ${contact.website || 'N/A'}
-
-MENSAJE
--------
-${contact.message || 'Sin mensaje adicional'}
-
-CONFIGURACIÓN
--------------
-ClientId: ${clientId}
-Nombre del Bot: ${config.client.name || 'N/A'}
-LLM activado: ${config.client.llm?.enabled ? 'Sí' : 'No'}
-
-FAQs registradas: ${config.chatbot_responses?.length || 0}
-
-Se adjunta la configuración completa en formato JSON.
-        `,
+        from: `"SAM MiniBot" <${mailUser}>`,
+        to: mailUser, // puedes cambiarlo luego si quieres
+        subject,
+        html,
         attachments: [
           {
             filename: `${clientId}.json`,
-            content: JSON.stringify(config, null, 2),
+            content: jsonAttachment,
             contentType: 'application/json'
           }
         ]
       });
 
-      // ------------------------------
-      // Respuesta OK
-      // ------------------------------
+      await reqRef.update({
+        status: 'sent',
+        updatedAt: now
+      });
+
       res.status(200).json({
         status: 'ok',
         message: 'Solicitud enviada correctamente'
       });
-      return;
 
-    } catch (error) {
-      console.error('[requestMiniBot]', error);
+    } catch (error: any) {
+      console.error('[requestMiniBot] FATAL', error);
 
       res.status(500).json({
         error: 'Error procesando la solicitud'
       });
-      return;
     }
   }
 );

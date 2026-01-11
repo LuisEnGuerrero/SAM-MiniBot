@@ -104,16 +104,18 @@ const MinibotForm: React.FC = () => {
     };
 
     try {
-      const res = await fetch('/requestMiniBot', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+      const res = await fetch(
+        'https://us-central1-mini-bot-7a21d.cloudfunctions.net/requestMiniBot',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }
+      );
 
       if (!res.ok) {
-        throw new Error('Error en el envío');
+        const text = await res.text();
+        throw new Error(text);
       }
 
       setSubmitted(true);

@@ -19,6 +19,9 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, setIsChatOpen }) => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const FAQS_PER_PAGE = 5;
+  const [faqPage, setFaqPage] = useState(0);
+
   // --------------------
   // INIT SESSION
   // --------------------
@@ -79,7 +82,9 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, setIsChatOpen }) => {
 
       if (faqs.length > 0) {
         setSuggestedFaqs(faqs);
+        setFaqPage(0); // 🔹 reinicia paginación en cada respuesta
       }
+
 
     } catch (error) {
       console.error('[ChatBot] Error:', error);
@@ -145,15 +150,39 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, setIsChatOpen }) => {
                   💡 También puedes preguntar:
                 </p>
 
-                {suggestedFaqs.slice(0, 5).map((faq, idx) => (
+                {suggestedFaqs
+                  .slice(
+                    faqPage * FAQS_PER_PAGE,
+                    (faqPage + 1) * FAQS_PER_PAGE
+                  )
+                  .map((faq, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleSendMessage(faq)}
+                      className="block text-left w-full text-sm text-blue-600 hover:underline mb-1"
+                    >
+                      • {faq}
+                    </button>
+                  ))}
+
+                {/* Paginación */}
+                <div className="flex justify-between mt-2 text-xs text-gray-500">
                   <button
-                    key={idx}
-                    onClick={() => handleSendMessage(faq)}
-                    className="block text-left w-full text-sm text-blue-600 hover:underline mb-1"
+                    disabled={faqPage === 0}
+                    onClick={() => setFaqPage(p => p - 1)}
+                    className="hover:underline disabled:opacity-40"
                   >
-                    • {faq}
+                    ◀ Anteriores
                   </button>
-                ))}
+
+                  <button
+                    disabled={(faqPage + 1) * FAQS_PER_PAGE >= suggestedFaqs.length}
+                    onClick={() => setFaqPage(p => p + 1)}
+                    className="hover:underline disabled:opacity-40"
+                  >
+                    Siguientes ▶
+                  </button>
+                </div>
               </div>
             )}
 
